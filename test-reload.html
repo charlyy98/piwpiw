@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Page Reload</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .button:hover {
+            background: #0056b3;
+        }
+        .button.danger {
+            background: #dc3545;
+        }
+        .button.danger:hover {
+            background: #c82333;
+        }
+        .info {
+            background: #e7f3ff;
+            border: 1px solid #b3d9ff;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+        .current-page {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Test Page Reload Functionality</h1>
+        
+        <div class="info">
+            <h3>Instructions:</h3>
+            <ol>
+                <li>Navigate to different pages in your app (Dashboard, Servers, Commands, etc.)</li>
+                <li>Use the buttons below to test navigation</li>
+                <li>Try reloading the page (F5 or Ctrl+R)</li>
+                <li>You should stay on the same page after reload</li>
+            </ol>
+        </div>
+
+        <div class="current-page">
+            <h3>Current Page: <span id="currentPage">dashboard</span></h3>
+            <p>URL Hash: <span id="currentHash">#dashboard</span></p>
+        </div>
+
+        <h3>Test Navigation:</h3>
+        <a href="#dashboard" class="button">Dashboard</a>
+        <a href="#servers" class="button">Servers</a>
+        <a href="#commands" class="button">Commands</a>
+        <a href="#analytics" class="button">Analytics</a>
+        <a href="#settings" class="button">Settings</a>
+        <a href="#profile" class="button">Profile</a>
+        <a href="#test" class="button">Test Page</a>
+
+        <h3>Test Actions:</h3>
+        <button onclick="reloadPage()" class="button danger">Reload Page (F5)</button>
+        <button onclick="goToRandomPage()" class="button">Go to Random Page</button>
+        <button onclick="clearHash()" class="button">Clear Hash</button>
+
+        <div class="info">
+            <h3>Expected Behavior:</h3>
+            <ul>
+                <li>✅ Navigation should update the URL hash</li>
+                <li>✅ Page reload should preserve the current page</li>
+                <li>✅ Back/Forward buttons should work correctly</li>
+                <li>✅ Direct URL access should work (e.g., /#servers)</li>
+            </ul>
+        </div>
+
+        <div class="info">
+            <h3>Debug Information:</h3>
+            <p>Check the browser console for detailed logging of navigation events.</p>
+            <p>If you see any errors or unexpected behavior, please report them.</p>
+        </div>
+    </div>
+
+    <script>
+        // Update display when hash changes
+        function updateDisplay() {
+            const hash = window.location.hash.replace('#', '') || 'dashboard';
+            document.getElementById('currentPage').textContent = hash;
+            document.getElementById('currentHash').textContent = '#' + hash;
+        }
+
+        // Listen for hash changes
+        window.addEventListener('hashchange', updateDisplay);
+        window.addEventListener('load', updateDisplay);
+
+        // Reload page function
+        function reloadPage() {
+            console.log('Reloading page...');
+            window.location.reload();
+        }
+
+        // Go to random page function
+        function goToRandomPage() {
+            const pages = ['dashboard', 'servers', 'commands', 'analytics', 'settings', 'profile', 'test'];
+            const randomPage = pages[Math.floor(Math.random() * pages.length)];
+            console.log('Going to random page:', randomPage);
+            window.location.hash = randomPage;
+        }
+
+        // Clear hash function
+        function clearHash() {
+            console.log('Clearing hash...');
+            window.location.hash = '';
+        }
+
+        // Log all navigation events
+        console.log('Test page loaded. Current hash:', window.location.hash);
+        
+        // Monitor hash changes
+        let currentHash = window.location.hash;
+        setInterval(() => {
+            if (window.location.hash !== currentHash) {
+                console.log('Hash changed from', currentHash, 'to', window.location.hash);
+                currentHash = window.location.hash;
+            }
+        }, 100);
+    </script>
+</body>
+</html>
