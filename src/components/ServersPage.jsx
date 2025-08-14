@@ -48,6 +48,8 @@ const ServersPage = () => {
 
   const handleAddBot = (serverId) => {
     console.log('Adding bot to server:', serverId);
+    // Open Discord invite link in new tab
+    window.open('https://discord.com/oauth2/authorize?client_id=1397634031268663448', '_blank', 'noopener,noreferrer');
   };
 
   const handleManageBot = (serverId) => {
@@ -101,7 +103,10 @@ const ServersPage = () => {
             <BarChart3 className="mr-2 h-4 w-4" />
             Analytics
           </Button>
-          <Button className="piwpiw-button">
+          <Button 
+            className="piwpiw-button"
+            onClick={() => window.open('https://discord.com/oauth2/authorize?client_id=1397634031268663448', '_blank', 'noopener,noreferrer')}
+          >
             <Plus className="mr-2 h-4 w-4" />
             {t('servers.addBot')}
           </Button>

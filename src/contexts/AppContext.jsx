@@ -15,26 +15,70 @@ export const useApp = () => {
 export const AppProvider = ({ children }) => {
   const [language, setLanguage] = useState('en');
   const [theme, setTheme] = useState('light');
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
-  const [user, setUser] = useState({
-    id: '123456789',
-    username: 'PiwPiw',
-    avatar: 'https://cdn.discordapp.com/avatars/123456789/avatar.png',
-    discriminator: '1234',
-    email: 'user@piwpiw.com'
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    // Initialize authentication state from localStorage
+    if (typeof window !== 'undefined') {
+      const savedAuth = localStorage.getItem('piwpiw-auth');
+      const savedUser = localStorage.getItem('piwpiw-user');
+      const isAuth = savedAuth === 'true' && savedUser;
+      console.log('Initializing auth state:', { savedAuth, savedUser, isAuth });
+      return isAuth;
+    }
+    return false;
+  });
+  const [user, setUser] = useState(() => {
+    // Initialize user state from localStorage
+    if (typeof window !== 'undefined') {
+      const savedUser = localStorage.getItem('piwpiw-user');
+      if (savedUser) {
+        try {
+          const userData = JSON.parse(savedUser);
+          console.log('Initializing user from localStorage:', userData);
+          return userData;
+        } catch (error) {
+          console.error('Failed to parse saved user data:', error);
+          return null;
+        }
+      }
+    }
+    return {
+      id: '123456789',
+      username: 'PiwPiw',
+      avatar: 'https://cdn.discordapp.com/avatars/123456789/avatar.png',
+      discriminator: '1234',
+      email: 'user@piwpiw.com'
+    };
   });
 
   // Load saved preferences from localStorage
   useEffect(() => {
+    console.log('Loading saved preferences from localStorage');
     const savedLanguage = localStorage.getItem('piwpiw-language');
     const savedTheme = localStorage.getItem('piwpiw-theme');
     const savedAuth = localStorage.getItem('piwpiw-auth');
     const savedUser = localStorage.getItem('piwpiw-user');
 
-    if (savedLanguage) setLanguage(savedLanguage);
-    if (savedTheme) setTheme(savedTheme);
-    if (savedAuth === 'true') setIsAuthenticated(true);
-    if (savedUser) setUser(JSON.parse(savedUser));
+    if (savedLanguage) {
+      setLanguage(savedLanguage);
+      console.log('Loaded language:', savedLanguage);
+    }
+    if (savedTheme) {
+      setTheme(savedTheme);
+      console.log('Loaded theme:', savedTheme);
+    }
+    if (savedAuth === 'true' && savedUser) {
+      setIsAuthenticated(true);
+      console.log('Loaded auth state: true');
+    }
+    if (savedUser) {
+      try {
+        const userData = JSON.parse(savedUser);
+        setUser(userData);
+        console.log('Loaded user data:', userData);
+      } catch (error) {
+        console.error('Failed to parse saved user data:', error);
+      }
+    }
   }, []);
 
   // Apply theme to document
@@ -55,10 +99,15 @@ export const AppProvider = ({ children }) => {
   };
 
   const login = (userData) => {
+    console.log('🔐 Login function called with userData:', userData);
+    console.log('🖼️ Avatar being set:', userData?.avatar);
+    console.log('👤 Username being set:', userData?.username);
+    
     setIsAuthenticated(true);
     setUser(userData);
     localStorage.setItem('piwpiw-auth', 'true');
     localStorage.setItem('piwpiw-user', JSON.stringify(userData));
+    console.log('✅ User logged in and stored:', userData);
   };
 
   const logout = () => {
@@ -66,7 +115,42 @@ export const AppProvider = ({ children }) => {
     setUser(null);
     localStorage.removeItem('piwpiw-auth');
     localStorage.removeItem('piwpiw-user');
+    
+    // Clear the URL hash to ensure we go back to login page
+    if (typeof window !== 'undefined') {
+      window.location.hash = '';
+      window.history.replaceState(null, '', window.location.pathname);
+    }
+    
+    console.log('User logged out');
   };
+
+  // Restore saved auth state only (no auto-login)
+  useEffect(() => {
+    if (!isAuthenticated && typeof window !== 'undefined') {
+      const savedAuth = localStorage.getItem('piwpiw-auth');
+      const savedUser = localStorage.getItem('piwpiw-user');
+      
+      console.log('Checking auth state:', { savedAuth, savedUser, isAuthenticated });
+      
+      if (savedAuth === 'true' && savedUser) {
+        // Only restore saved auth state, no auto-login
+        try {
+          const userData = JSON.parse(savedUser);
+          console.log('Restoring saved auth state:', userData);
+          setIsAuthenticated(true);
+          setUser(userData);
+        } catch (error) {
+          console.error('Failed to restore saved auth state:', error);
+        }
+      }
+    }
+  }, []); // Remove isAuthenticated dependency to prevent loop after logout
+
+  // Debug effect to log auth state changes
+  useEffect(() => {
+    console.log('Auth state changed:', { isAuthenticated, user: user?.username });
+  }, [isAuthenticated, user]);
 
   const t = (key) => {
     const keys = key.split('.');
@@ -98,6 +182,12 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  const updateUser = (userData) => {
+    setUser(userData);
+    localStorage.setItem('piwpiw-user', JSON.stringify(userData));
+    console.log('User data updated:', userData);
+  };
+
   const value = {
     language,
     theme,
@@ -108,6 +198,7 @@ export const AppProvider = ({ children }) => {
     login,
     logout,
     updateAvatar,
+    updateUser,
     t
   };
 
@@ -117,4 +208,6 @@ export const AppProvider = ({ children }) => {
     </AppContext.Provider>
   );
 };
+
+
 

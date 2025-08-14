@@ -19,9 +19,11 @@ This guide will help you connect your Discord bot "PiwPiw" to this dashboard for
 1. Go to OAuth2 → General
 2. Add these Redirect URIs:
    ```
-   http://localhost:5173/auth/discord/callback
-   http://your-domain.com/auth/discord/callback
+   http://localhost:5173
+   http://your-domain.com
    ```
+   
+   **Important**: Since your bot client ID `1397634031268663448` is already configured, make sure to add `http://localhost:5173` as a redirect URI in your Discord application settings.
 3. Go to OAuth2 → URL Generator
 4. Select these scopes:
    - `identify` - to get user info

@@ -28,6 +28,7 @@ import {
   Sun,
   Globe,
   User,
+  Info,
   Crown,
   Shield,
   Bell,
@@ -70,6 +71,7 @@ const DashboardLayout = ({ children, currentPage, setCurrentPage, sidebarOpen, s
     { name: 'servers', icon: Server, key: 'servers' },
     { name: 'commands', icon: Terminal, key: 'commands' },
     { name: 'analytics', icon: BarChart3, key: 'analytics' },
+    { name: 'about', icon: Info, key: 'about' },
     { name: 'settings', icon: Settings, key: 'settings' },
   ];
 
@@ -145,7 +147,7 @@ const DashboardLayout = ({ children, currentPage, setCurrentPage, sidebarOpen, s
                 <div className="relative">
                   <Avatar className="h-12 w-12 ring-2 ring-orange-200 dark:ring-orange-800">
                     <AvatarImage src={user?.avatar} />
-                    <AvatarFallback className="bg-gradient-to-br from-orange-400 to-orange-600 text-white font-semibold text-lg">
+                    <AvatarFallback className="text-white font-semibold text-lg">
                       {user?.username?.[0]?.toUpperCase()}
                     </AvatarFallback>
                   </Avatar>
@@ -261,7 +263,7 @@ const DashboardLayout = ({ children, currentPage, setCurrentPage, sidebarOpen, s
                     <div className="relative">
                       <Avatar className="h-8 w-8 ring-2 ring-orange-200 dark:ring-orange-800">
                         <AvatarImage src={user?.avatar} />
-                        <AvatarFallback className="bg-gradient-to-br from-orange-400 to-orange-600 text-white font-semibold">
+                        <AvatarFallback className="text-white font-semibold">
                           {user?.username?.[0]?.toUpperCase()}
                         </AvatarFallback>
                       </Avatar>

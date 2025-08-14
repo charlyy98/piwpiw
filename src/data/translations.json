@@ -5,6 +5,7 @@
       "servers": "Servers",
       "commands": "Commands",
       "analytics": "Analytics",
+      "about": "About",
       "settings": "Settings",
       "logout": "Logout"
     },
@@ -104,6 +105,7 @@
       "servers": "السيرفرات",
       "commands": "الأوامر",
       "analytics": "الإحصائيات",
+      "about": "حول",
       "settings": "الإعدادات",
       "logout": "تسجيل الخروج"
     },

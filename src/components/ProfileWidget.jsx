@@ -49,9 +49,9 @@ const ProfileWidget = ({ onNavigateToProfile, compact = false }) => {
             <div className="relative">
               <Avatar className="h-12 w-12 ring-2 ring-orange-200 dark:ring-orange-800">
                 <AvatarImage src={user?.avatar} />
-                <AvatarFallback className="bg-gradient-to-br from-orange-400 to-orange-600 text-white font-semibold">
-                  {user?.username?.[0]?.toUpperCase()}
-                </AvatarFallback>
+                              <AvatarFallback className="text-white font-semibold">
+                {user?.username?.[0]?.toUpperCase()}
+              </AvatarFallback>
               </Avatar>
               <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-white dark:border-slate-900 rounded-full"></div>
             </div>
@@ -100,7 +100,7 @@ const ProfileWidget = ({ onNavigateToProfile, compact = false }) => {
           <div className="relative">
             <Avatar className="h-16 w-16 ring-2 ring-orange-200 dark:ring-orange-800">
               <AvatarImage src={user?.avatar} />
-              <AvatarFallback className="bg-gradient-to-br from-orange-400 to-orange-600 text-white font-bold text-xl">
+              <AvatarFallback className="text-white font-bold text-xl">
                 {user?.username?.[0]?.toUpperCase()}
               </AvatarFallback>
             </Avatar>
