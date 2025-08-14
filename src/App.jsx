@@ -8,7 +8,6 @@ import ServersPage from './components/ServersPage';
 import SettingsPage from './components/SettingsPage';
 import ProfilePage from './components/ProfilePage';
 import LoginPage from './components/LoginPage';
-import TestPage from './components/TestPage';
 import './App.css';
 
 const AppContent = () => {
@@ -17,7 +16,7 @@ const AppContent = () => {
     // Initialize from hash if present, with better validation
     if (typeof window !== 'undefined') {
       const hash = window.location.hash.replace('#', '');
-      const validPages = ['dashboard', 'servers', 'commands', 'analytics', 'settings', 'profile', 'test'];
+      const validPages = ['dashboard', 'servers', 'commands', 'analytics', 'settings', 'profile'];
       const pageFromHash = validPages.includes(hash) ? hash : 'dashboard';
       console.log('Initializing page from hash:', hash, '->', pageFromHash);
       return pageFromHash;
@@ -128,8 +127,6 @@ const AppContent = () => {
         return <SettingsPage />;
       case 'profile':
         return <ProfilePage />;
-      case 'test':
-        return <TestPage />;
       default:
         return <Dashboard />;
     }

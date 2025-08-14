@@ -6,7 +6,6 @@
       "commands": "Commands",
       "analytics": "Analytics",
       "settings": "Settings",
-      "test": "Test Page",
       "logout": "Logout"
     },
     "dashboard": {
@@ -106,7 +105,6 @@
       "commands": "الأوامر",
       "analytics": "الإحصائيات",
       "settings": "الإعدادات",
-      "test": "صفحة الاختبار",
       "logout": "تسجيل الخروج"
     },
     "dashboard": {

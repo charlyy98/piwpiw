@@ -71,7 +71,6 @@ const DashboardLayout = ({ children, currentPage, setCurrentPage, sidebarOpen, s
     { name: 'commands', icon: Terminal, key: 'commands' },
     { name: 'analytics', icon: BarChart3, key: 'analytics' },
     { name: 'settings', icon: Settings, key: 'settings' },
-    { name: 'test', icon: Activity, key: 'test' },
   ];
 
   const handleLogout = () => {
