@@ -5,6 +5,7 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { Switch } from './ui/switch';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { Separator } from './ui/separator';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { Badge } from './ui/badge';
@@ -79,6 +80,23 @@ const SettingsPage = () => {
   ]);
   const [newAPIKeyName, setNewAPIKeyName] = useState('');
   const [showPasswordModal, setShowPasswordModal] = useState(false);
+  
+  // Category settings state (persisted)
+  const [categoryConfigMap, setCategoryConfigMap] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem('piwpiw-category-settings')) || {};
+    } catch (e) {
+      return {};
+    }
+  });
+  const [showCategoryModal, setShowCategoryModal] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [categoryModalData, setCategoryModalData] = useState({
+    retention: '1 year',
+    autoSync: true,
+    notifyOnSync: true,
+    cleanupPolicy: 'archive'
+  });
   
   const [notifications, setNotifications] = useState({
     email: true,
@@ -460,6 +478,55 @@ const SettingsPage = () => {
     setVerificationCode('');
     setQrCodeSecret('');
     setBackupCodes([]);
+  };
+
+  // Smart Data Categories: export and settings handlers
+  const exportCategoryData = (category) => {
+    setSaveStatus('category-exporting');
+    setTimeout(() => {
+      const payload = {
+        category: category.name,
+        meta: {
+          size: category.size,
+          files: category.files,
+          lastSync: category.lastSync,
+        },
+        exportedAt: new Date().toISOString(),
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `piwpiw-${category.name.toLowerCase().replace(/\\s+/g, '-')}-export-${new Date().toISOString().split('T')[0]}.json`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      setSaveStatus('category-exported');
+      setTimeout(() => setSaveStatus(''), 2000);
+    }, 800);
+  };
+
+  const openCategorySettings = (category) => {
+    const stored = categoryConfigMap[category.name] || {};
+    setSelectedCategory(category);
+    setCategoryModalData({
+      retention: stored.retention || category.retention,
+      autoSync: stored.autoSync ?? true,
+      notifyOnSync: stored.notifyOnSync ?? true,
+      cleanupPolicy: stored.cleanupPolicy || 'archive',
+    });
+    setShowCategoryModal(true);
+  };
+
+  const saveCategorySettings = () => {
+    if (!selectedCategory) return;
+    const updated = { ...categoryConfigMap, [selectedCategory.name]: categoryModalData };
+    setCategoryConfigMap(updated);
+    localStorage.setItem('piwpiw-category-settings', JSON.stringify(updated));
+    setShowCategoryModal(false);
+    setSaveStatus('category-settings-saved');
+    setTimeout(() => setSaveStatus(''), 2000);
   };
 
   const tabs = [
@@ -3347,7 +3414,7 @@ const SettingsPage = () => {
                                   <span>Size: <strong>{category.size}</strong></span>
                                   <span>Files: <strong>{category.files}</strong></span>
                                   <span>Last sync: <strong>{category.lastSync}</strong></span>
-                                  <span>Retention: <strong>{category.retention}</strong></span>
+                                  <span>Retention: <strong>{categoryConfigMap[category.name]?.retention || category.retention}</strong></span>
                                 </div>
                               </div>
                             </div>
@@ -3355,20 +3422,14 @@ const SettingsPage = () => {
                               <Button
                                 variant="ghost"
                                 size="sm"
-                                onClick={() => {
-                                  setSaveStatus('category-exported');
-                                  setTimeout(() => setSaveStatus(''), 2000);
-                                }}
+                                onClick={() => exportCategoryData(category)}
                               >
                                 <Download className="w-4 h-4" />
                               </Button>
                               <Button
                                 variant="ghost"
                                 size="sm"
-                                onClick={() => {
-                                  setSaveStatus('category-configured');
-                                  setTimeout(() => setSaveStatus(''), 2000);
-                                }}
+                                onClick={() => openCategorySettings(category)}
                               >
                                 <Settings className="w-4 h-4" />
                               </Button>
@@ -7181,6 +7242,81 @@ const SettingsPage = () => {
             <div className="p-4 border-t bg-slate-50 flex justify-end space-x-3">
               <Button variant="outline" onClick={() => setShowAPIModal(false)}>
                 Close
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Category Settings Modal */}
+      {showCategoryModal && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl animate-in zoom-in-95 duration-300">
+            <div className="flex items-center justify-between p-6 border-b bg-gradient-to-r from-slate-50 to-blue-50">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
+                  <SettingsIcon className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold">{selectedCategory?.name}</h3>
+                  <p className="text-sm text-muted-foreground">Configure retention and sync options</p>
+                </div>
+              </div>
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                onClick={() => setShowCategoryModal(false)}
+                className="rounded-full"
+              >
+                <X className="w-5 h-5" />
+              </Button>
+            </div>
+            <div className="p-6 space-y-5">
+              <div className="space-y-2">
+                <Label>Retention</Label>
+                <Select value={categoryModalData.retention} onValueChange={(value) => setCategoryModalData(prev => ({ ...prev, retention: value }))}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select retention" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="1 month">1 month</SelectItem>
+                    <SelectItem value="3 months">3 months</SelectItem>
+                    <SelectItem value="6 months">6 months</SelectItem>
+                    <SelectItem value="1 year">1 year</SelectItem>
+                    <SelectItem value="2 years">2 years</SelectItem>
+                    <SelectItem value="5 years">5 years</SelectItem>
+                    <SelectItem value="unlimited">Unlimited</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm">Auto Sync</span>
+                <Switch checked={categoryModalData.autoSync} onCheckedChange={(checked) => setCategoryModalData(prev => ({ ...prev, autoSync: checked }))} />
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm">Notify on sync completion</span>
+                <Switch checked={categoryModalData.notifyOnSync} onCheckedChange={(checked) => setCategoryModalData(prev => ({ ...prev, notifyOnSync: checked }))} />
+              </div>
+              <div className="space-y-2">
+                <Label>Cleanup Policy</Label>
+                <Select value={categoryModalData.cleanupPolicy} onValueChange={(value) => setCategoryModalData(prev => ({ ...prev, cleanupPolicy: value }))}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="archive">Archive old items</SelectItem>
+                    <SelectItem value="delete">Delete permanently</SelectItem>
+                    <SelectItem value="retain">Retain indefinitely</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+            <div className="p-4 border-t bg-slate-50 flex justify-end space-x-3">
+              <Button variant="outline" onClick={() => setShowCategoryModal(false)}>
+                Cancel
+              </Button>
+              <Button onClick={saveCategorySettings}>
+                Save
               </Button>
             </div>
           </div>
