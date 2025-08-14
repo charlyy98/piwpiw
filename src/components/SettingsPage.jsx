@@ -61,7 +61,7 @@ import {
 } from 'lucide-react';
 
 const SettingsPage = () => {
-  const { t, user, theme, language, toggleTheme, toggleLanguage, updateAvatar } = useApp();
+  const { t, user, theme, language, toggleTheme, setThemeMode, toggleLanguage, updateAvatar } = useApp();
   const [activeTab, setActiveTab] = useState('account');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -1162,7 +1162,7 @@ const SettingsPage = () => {
                           }`}
                           onClick={() => {
                             if (theme !== themeOption.id) {
-                              toggleTheme();
+                              setThemeMode(themeOption.id);
                               setSaveStatus('theme-changed');
                               setTimeout(() => setSaveStatus(''), 2000);
                             }
