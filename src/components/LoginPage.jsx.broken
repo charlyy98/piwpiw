@@ -1,0 +1,669 @@
+import React, { useState } from 'react';
+import { useApp } from '../contexts/AppContext';
+import { Button } from './ui/button';
+import { Input } from './ui/input';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
+import { Label } from './ui/label';
+import { Moon, Sun, Globe, Bot, Shield, Zap, Users } from 'lucide-react';
+import piwpiwLogo from '../assets/piwpiw_logo_with_text.png';
+import chibiCharacter from '../assets/chibi_character.png';
+
+const LoginPage = () => {
+  const { t, toggleTheme, toggleLanguage, theme, language, login } = useApp();
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    
+    // Simulate login process
+    setTimeout(() => {
+      const userData = {
+        id: '123456789',
+        username: username || 'PiwPiwUser',
+        avatar: 'https://cdn.discordapp.com/avatars/123456789/avatar.png',
+        discriminator: '1234',
+        email: 'user@example.com'
+      };
+      login(userData);
+      setIsLoading(false);
+    }, 1500);
+  };
+
+  const handleDiscordLogin = () => {
+    // Discord OAuth URL - Replace CLIENT_ID with your actual Discord application client ID
+    const DISCORD_CLIENT_ID = 'YOUR_DISCORD_CLIENT_ID';
+    const REDIRECT_URI = encodeURIComponent(window.location.origin + '/auth/discord/callback');
+    const DISCORD_OAUTH_URL = `https://discord.com/api/oauth2/authorize?client_id=${DISCORD_CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=identify%20guilds`;
+    
+    // For now, we'll simulate Discord login
+    setIsLoading(true);
+    setTimeout(() => {
+      const userData = {
+        id: '123456789',
+        username: 'PiwPiwUser',
+        avatar: 'https://cdn.discordapp.com/avatars/123456789/avatar.png',
+        discriminator: '1234',
+        email: 'user@discord.com'
+      };
+      login(userData);
+      setIsLoading(false);
+    }, 2000);
+    
+    // Uncomment this line when you have your Discord OAuth set up:
+    // window.location.href = DISCORD_OAUTH_URL;
+  };
+
+  return (
+    <div className="min-h-screen bg-background flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Ultra-Professional Executive Background System */}
+      <div className="absolute inset-0 overflow-hidden">
+        {/* Advanced Corporate Grid Pattern */}
+        <div className="absolute inset-0 bg-grid-slate-100/[0.03] bg-[length:60px_60px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,white,transparent)]"></div>
+        <div className="absolute inset-0 bg-grid-blue-100/[0.015] bg-[length:120px_120px] [mask-image:linear-gradient(45deg,white,rgba(255,255,255,0.4))]"></div>
+        
+        {/* Fortune 500 Multi-Layer Gradient System */}
+        <div className="absolute -top-60 -right-60 w-[500px] h-[500px] bg-gradient-to-br from-blue-500/35 via-indigo-500/25 to-purple-500/20 rounded-full blur-[120px] animate-pulse"></div>
+        <div className="absolute -bottom-60 -left-60 w-[500px] h-[500px] bg-gradient-to-tr from-emerald-500/30 via-cyan-500/25 to-blue-500/20 rounded-full blur-[120px] animate-pulse delay-1000"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-violet-500/25 via-purple-500/15 to-indigo-500/20 rounded-full blur-[140px] animate-pulse delay-500"></div>
+        
+        {/* Executive Floating Particle System */}
+        <div className="absolute top-20 left-20 w-4 h-4 bg-gradient-to-br from-blue-400 via-blue-500 to-blue-600 rounded-full animate-bounce delay-100 shadow-2xl border border-white/30">
+          <div className="absolute inset-1 bg-white/50 rounded-full"></div>
+          <div className="absolute -inset-1 bg-blue-400/30 rounded-full animate-ping"></div>
+        </div>
+        <div className="absolute top-40 right-32 w-3 h-3 bg-gradient-to-br from-indigo-400 via-indigo-500 to-indigo-600 rounded-full animate-bounce delay-300 shadow-xl border border-white/20">
+          <div className="absolute inset-0.5 bg-white/40 rounded-full"></div>
+        </div>
+        <div className="absolute bottom-32 left-1/3 w-3.5 h-3.5 bg-gradient-to-br from-purple-400 via-purple-500 to-purple-600 rounded-full animate-bounce delay-700 shadow-xl border border-white/25">
+          <div className="absolute inset-0.5 bg-white/45 rounded-full"></div>
+        </div>
+        <div className="absolute bottom-20 right-20 w-4 h-4 bg-gradient-to-br from-cyan-400 via-cyan-500 to-cyan-600 rounded-full animate-bounce delay-1000 shadow-2xl border border-white/30">
+          <div className="absolute inset-1 bg-white/50 rounded-full"></div>
+          <div className="absolute -inset-1 bg-cyan-400/30 rounded-full animate-ping"></div>
+        </div>
+        
+        {/* Corporate Linear Light Elements */}
+        <div className="absolute top-60 left-10 w-2 h-12 bg-gradient-to-b from-blue-500/50 via-indigo-500/40 to-transparent rounded-full animate-pulse shadow-lg">
+          <div className="absolute inset-0 bg-gradient-to-t from-transparent to-white/30 rounded-full"></div>
+        </div>
+        <div className="absolute bottom-60 right-10 w-2 h-12 bg-gradient-to-b from-purple-500/50 via-violet-500/40 to-transparent rounded-full animate-pulse delay-500 shadow-lg">
+          <div className="absolute inset-0 bg-gradient-to-t from-transparent to-white/30 rounded-full"></div>
+        </div>
+        
+        {/* Enterprise Geometric Accent Lines */}
+        <div className="absolute top-32 left-0 w-24 h-px bg-gradient-to-r from-transparent via-blue-400/60 to-transparent"></div>
+        <div className="absolute top-48 right-0 w-24 h-px bg-gradient-to-l from-transparent via-indigo-400/60 to-transparent"></div>
+        <div className="absolute bottom-32 left-0 w-24 h-px bg-gradient-to-r from-transparent via-purple-400/60 to-transparent"></div>
+        <div className="absolute bottom-48 right-0 w-24 h-px bg-gradient-to-l from-transparent via-cyan-400/60 to-transparent"></div>
+        
+        {/* Premium Corporate Corner Elements */}
+        <div className="absolute top-8 left-8 w-8 h-8 border-l-2 border-t-2 border-blue-400/40 rounded-tl-lg"></div>
+        <div className="absolute top-8 right-8 w-8 h-8 border-r-2 border-t-2 border-indigo-400/40 rounded-tr-lg"></div>
+        <div className="absolute bottom-8 left-8 w-8 h-8 border-l-2 border-b-2 border-purple-400/40 rounded-bl-lg"></div>
+        <div className="absolute bottom-8 right-8 w-8 h-8 border-r-2 border-b-2 border-cyan-400/40 rounded-br-lg"></div>
+      </div>
+
+      {/* Ultra-Professional Executive Header System */}
+      <div className="absolute top-0 left-0 right-0 z-50">
+        {/* Corporate Executive Status Bar */}
+        <div className="h-1.5 bg-gradient-to-r from-blue-600 via-indigo-600 via-purple-600 via-cyan-600 to-emerald-600 shadow-lg"></div>
+        
+        {/* Premium Enterprise Navigation Strip */}
+        <div className="h-8 bg-gradient-to-r from-slate-900/95 via-slate-800/95 to-slate-900/95 backdrop-blur-xl border-b border-white/10 flex items-center justify-between px-6">
+          <div className="flex items-center space-x-3">
+            <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse shadow-sm"></div>
+            <span className="text-xs font-semibold text-white/90 tracking-wider">PIWPIW ENTERPRISE</span>
+            <div className="w-px h-4 bg-white/20"></div>
+            <span className="text-xs text-white/70">v2.1.0 • Production Ready</span>
+          </div>
+          <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-1 text-xs text-white/70">
+              <div className="w-1.5 h-1.5 bg-green-400 rounded-full"></div>
+              <span>All Systems Operational</span>
+            </div>
+            <div className="text-xs text-white/60">Security: Active</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Ultra-Premium Professional Control Center */}
+      <div className="absolute top-12 right-4 flex gap-3 z-40">
+        {/* Executive Theme Toggle */}
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={toggleTheme}
+          className="piwpiw-glass border-2 border-white/30 hover:border-white/50 hover:bg-white/20 transition-all duration-500 shadow-xl hover:shadow-2xl backdrop-blur-2xl relative group overflow-hidden"
+        >
+          <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          {theme === 'light' ? 
+            <Moon className="h-4 w-4 relative z-10 transition-transform duration-300 group-hover:rotate-12" /> : 
+            <Sun className="h-4 w-4 relative z-10 transition-transform duration-300 group-hover:rotate-180" />}
+          <div className="absolute -inset-1 bg-gradient-to-r from-amber-400/30 to-orange-400/30 rounded-md blur opacity-0 group-hover:opacity-70 transition-opacity duration-500"></div>
+        </Button>
+        
+        {/* Fortune 500 Language Selector */}
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={toggleLanguage}
+          className="piwpiw-glass border-2 border-white/30 hover:border-white/50 hover:bg-white/20 transition-all duration-500 font-bold shadow-xl hover:shadow-2xl backdrop-blur-2xl relative group overflow-hidden"
+        >
+          <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          <Globe className="h-4 w-4 mr-2 relative z-10 transition-transform duration-300 group-hover:rotate-180" />
+          <span className="text-xs font-black tracking-widest relative z-10">{language.toUpperCase()}</span>
+          <div className="absolute -inset-1 bg-gradient-to-r from-blue-400/30 to-indigo-400/30 rounded-md blur opacity-0 group-hover:opacity-70 transition-opacity duration-500"></div>
+        </Button>
+      </div>
+
+      {/* Ultra-Premium Executive Status Bar */}
+      <div className="absolute bottom-4 left-4 flex items-center space-x-4 text-xs text-muted-foreground/70 z-30">
+        <div className="flex items-center space-x-3 px-4 py-2 bg-gradient-to-r from-slate-900/80 via-slate-800/80 to-slate-900/80 backdrop-blur-xl rounded-full border border-white/20 shadow-xl">
+          <div className="flex items-center space-x-2">
+            <div className="w-2.5 h-2.5 bg-gradient-to-r from-emerald-400 to-green-500 rounded-full animate-pulse shadow-sm">
+              <div className="absolute inset-0 bg-emerald-300/60 rounded-full animate-ping"></div>
+            </div>
+            <span className="font-bold text-white tracking-wider">PIWPIW ENTERPRISE</span>
+          </div>
+          <div className="w-px h-4 bg-white/30"></div>
+          <span className="text-white/80 font-medium">Dashboard v2.1.0</span>
+          <div className="w-px h-4 bg-white/30"></div>
+          <span className="text-white/70">Fortune 500 Edition</span>
+          <div className="w-px h-4 bg-white/30"></div>
+          <div className="flex items-center space-x-1">
+            <Shield className="h-3 w-3 text-blue-400" />
+            <span className="text-blue-300 font-medium">Secured</span>
+          </div>
+        </div>
+        
+        {/* Executive Performance Metrics */}
+        <div className="flex items-center space-x-3 px-3 py-2 bg-gradient-to-r from-blue-900/80 to-indigo-900/80 backdrop-blur-xl rounded-full border border-blue-400/30 shadow-lg">
+          <div className="flex items-center space-x-1">
+            <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+            <span className="text-green-300 font-semibold">99.99% SLA</span>
+          </div>
+          <div className="w-px h-3 bg-white/20"></div>
+          <span className="text-cyan-300 font-medium">42ms RTT</span>
+        </div>
+      </div>
+
+      <div className="w-full max-w-7xl mx-auto grid lg:grid-cols-[1.2fr_420px] gap-16 items-center relative z-10 px-6 lg:px-12">
+        {/* Left side - Professional Executive Branding */}
+        <div className="text-center lg:text-left space-y-8">
+          {/* Professional Bot Status Banner */}
+          <div className="p-4 bg-gradient-to-r from-emerald-50/95 via-green-50/95 to-emerald-50/95 border-2 border-emerald-200/70 rounded-xl backdrop-blur-sm shadow-lg">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-green-600 rounded-xl flex items-center justify-center shadow-lg">
+                  <Bot className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <div className="text-base font-black text-emerald-800">Bot Status: ONLINE</div>
+                  <div className="text-sm text-emerald-700 font-semibold">All systems operational • Response time: 42ms</div>
+                </div>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="relative w-3 h-3 bg-emerald-500 rounded-full animate-pulse">
+                  <div className="absolute inset-0 bg-emerald-300/60 rounded-full animate-ping"></div>
+                </div>
+                <span className="text-sm font-black text-emerald-700">LIVE</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex justify-center lg:justify-start">
+            <div className="relative group">
+              {/* Compact Professional Logo Container */}
+              <div className="relative p-4 bg-gradient-to-br from-slate-50/15 via-white/12 to-slate-100/8 backdrop-blur-lg rounded-xl border border-white/30 shadow-[0_16px_40px_rgba(0,_30,_60,_0.12)] hover:shadow-[0_20px_50px_rgba(0,_30,_60,_0.18)] transition-all duration-800 before:absolute before:inset-0 before:rounded-xl before:border before:border-white/25 before:bg-gradient-to-br before:from-white/12 before:via-slate-50/8 before:to-transparent before:opacity-70 after:absolute after:inset-0 after:rounded-xl after:bg-gradient-to-tl after:from-transparent after:via-white/8 after:to-white/15 after:opacity-50">
+                
+                {/* Compact Corporate Header Bar */}
+                <div className="absolute -top-0.5 left-1/2 transform -translate-x-1/2 w-12 h-1 bg-gradient-to-r from-blue-600 via-indigo-600 via-purple-600 to-cyan-600 rounded-full shadow-md">
+                  <div className="absolute inset-0 bg-gradient-to-r from-white/25 to-white/12 rounded-full"></div>
+                </div>
+                
+                {/* Compact Professional Logo */}
+                <div className="relative z-30">
+                  <img 
+                    src={piwpiwLogo} 
+                    alt="PiwPiw Enterprise Platform" 
+                    className="h-24 w-auto relative z-10 transition-all duration-800 group-hover:scale-103 filter contrast-110 saturate-105 brightness-102 drop-shadow-[0_8px_32px_rgba(0,0,0,0.12)] group-hover:drop-shadow-[0_12px_40px_rgba(0,0,0,0.18)]"
+                    style={{
+                      filter: 'contrast(1.1) saturate(1.05) brightness(1.02) hue-rotate(1deg)'
+                    }}
+                  />
+                </div>
+                
+                {/* Compact Multi-Layer Glow System */}
+                <div className="absolute -inset-2 bg-gradient-to-r from-blue-500/20 via-indigo-500/15 to-purple-500/20 rounded-xl blur-lg opacity-30 animate-pulse group-hover:opacity-45 transition-opacity duration-800"></div>
+                <div className="absolute -inset-1 bg-gradient-to-br from-white/20 via-primary/10 to-secondary/15 rounded-xl blur-md opacity-20 group-hover:opacity-30 transition-opacity duration-800"></div>
+                
+                {/* Compact Status System */}
+                <div className="absolute -top-2 -right-2 flex flex-col items-end space-y-1">
+                  {/* Compact Live Status */}
+                  <div className="flex items-center space-x-1.5 px-2 py-1 bg-gradient-to-r from-emerald-600/90 to-green-600/90 backdrop-blur-sm rounded-lg border border-white/30 shadow-md">
+                    <div className="w-2 h-2 bg-white rounded-full animate-pulse shadow-sm relative">
+                      <div className="absolute inset-0 bg-emerald-200/50 rounded-full animate-ping"></div>
+                    </div>
+                    <span className="text-xs font-bold text-white tracking-wide">ONLINE</span>
+                  </div>
+                </div>
+                
+                {/* Compact Compliance Badges */}
+                <div className="absolute -bottom-2 -left-2 flex items-center space-x-1.5">
+                  {/* Compact PIWPIW Badge */}
+                  <div className="px-2 py-1 bg-gradient-to-r from-orange-600/90 to-amber-600/90 backdrop-blur-sm rounded-md border border-white/30 shadow-md">
+                    <div className="flex items-center space-x-1">
+                      <div className="w-1.5 h-1.5 bg-white/80 rounded-full animate-pulse"></div>
+                      <span className="text-xs font-bold text-white tracking-wide">PIWPIW</span>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Compact Fortune 500 Reflection System */}
+                <div className="absolute inset-0 bg-gradient-to-br from-white/25 via-white/10 to-transparent rounded-xl opacity-25 group-hover:opacity-35 transition-opacity duration-800"></div>
+                <div className="absolute inset-0 bg-gradient-to-tl from-transparent via-white/8 to-white/20 rounded-xl opacity-15 group-hover:opacity-25 transition-opacity duration-800"></div>
+                
+                {/* Compact Floating Elements */}
+                <div className="absolute -top-2 -left-2 w-3 h-3 bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700 rounded-full animate-bounce delay-100 shadow-md border border-white/40">
+                  <div className="absolute inset-0.5 bg-white/40 rounded-full"></div>
+                </div>
+                <div className="absolute -bottom-1.5 -right-2.5 w-2.5 h-2.5 bg-gradient-to-br from-indigo-500 via-indigo-600 to-indigo-700 rounded-full animate-bounce delay-300 shadow-md border border-white/30">
+                  <div className="absolute inset-0.5 bg-white/30 rounded-full"></div>
+                </div>
+                <div className="absolute -top-2.5 right-4 w-2 h-2 bg-gradient-to-br from-purple-500 via-purple-600 to-purple-700 rounded-full animate-bounce delay-500 shadow-sm border border-white/25">
+                </div>
+                
+                {/* Compact Geometric Elements */}
+                <div className="absolute top-2 left-2 w-6 h-0.5 bg-gradient-to-r from-white/60 to-transparent rounded-full"></div>
+                <div className="absolute top-2 right-2 w-6 h-0.5 bg-gradient-to-l from-white/60 to-transparent rounded-full"></div>
+                <div className="absolute bottom-2 left-2 w-6 h-0.5 bg-gradient-to-r from-white/60 to-transparent rounded-full"></div>
+                <div className="absolute bottom-2 right-2 w-6 h-0.5 bg-gradient-to-l from-white/60 to-transparent rounded-full"></div>
+                
+                {/* Compact Corner Accents */}
+                <div className="absolute top-0.5 left-0.5 w-2.5 h-2.5 border-l border-t border-white/50 rounded-tl-md"></div>
+                <div className="absolute top-0.5 right-0.5 w-2.5 h-2.5 border-r border-t border-white/50 rounded-tr-md"></div>
+                <div className="absolute bottom-0.5 left-0.5 w-2.5 h-2.5 border-l border-b border-white/50 rounded-bl-md"></div>
+                <div className="absolute bottom-0.5 right-0.5 w-2.5 h-2.5 border-r border-b border-white/50 rounded-br-md"></div>
+              </div>
+              
+              {/* Compact Shadow System */}
+              <div className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 w-24 h-6 bg-gradient-to-r from-transparent via-slate-900/30 to-transparent rounded-full blur-lg opacity-25"></div>
+              <div className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-20 h-4 bg-gradient-to-r from-transparent via-black/25 to-transparent rounded-full blur-md opacity-40"></div>
+            </div>
+          </div>
+          
+          {/* Professional Server Invitation Section */}
+          <div className="mt-4 p-4 bg-gradient-to-br from-blue-50/90 via-indigo-50/90 to-purple-50/90 border-2 border-blue-200/60 rounded-xl backdrop-blur-sm shadow-lg">
+            <div className="text-center">
+              <div className="flex justify-center mb-3">
+                <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center shadow-md">
+                  <Users className="w-5 h-5 text-white" />
+                </div>
+              </div>
+              <h3 className="text-sm font-black text-blue-800 mb-2">Join 500K+ Discord Communities</h3>
+              <p className="text-xs text-blue-700 font-medium mb-4">Add PiwPiw to your server and unlock premium Discord management features</p>
+              
+              <div className="grid grid-cols-2 gap-2">
+                <Button 
+                  onClick={() => window.open('https://discord.com/api/oauth2/authorize?client_id=YOUR_BOT_CLIENT_ID&permissions=8&scope=bot%20applications.commands', '_blank')}
+                  size="sm"
+                  className="h-8 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold text-xs transition-all duration-300 hover:scale-105"
+                >
+                  <Bot className="w-3 h-3 mr-1" />
+                  Add Bot
+                </Button>
+                <Button 
+                  variant="outline"
+                  size="sm"
+                  onClick={() => window.open('https://discord.gg/piwpiw', '_blank')}
+                  className="h-8 border-2 border-blue-300 text-blue-700 hover:bg-blue-100 font-bold text-xs transition-all duration-300 hover:scale-105"
+                >
+                  <Globe className="w-3 h-3 mr-1" />
+                  Support
+                </Button>
+              </div>
+            </div>
+          </div>
+
+            <div className="space-y-4">
+            <div className="text-center lg:text-left">
+              <h1 className="text-3xl lg:text-4xl font-black piwpiw-text-gradient drop-shadow-lg leading-tight">
+                {t('login.title')}
+              </h1>
+              <p className="text-base lg:text-lg text-muted-foreground font-bold mt-2">
+                {t('login.subtitle')}
+              </p>
+              <div className="mt-2 text-xs text-muted-foreground/85 max-w-sm mx-auto lg:mx-0 leading-relaxed">
+                Professional Discord bot management platform with enterprise analytics, real-time monitoring, and advanced security.
+              </div>
+              
+              {/* Compact Fortune 500 Certifications */}
+              <div className="flex flex-wrap justify-center lg:justify-start gap-2 mt-4">
+                <div className="flex items-center space-x-1 px-2 py-1 bg-gradient-to-r from-emerald-500/10 via-green-500/8 to-emerald-500/10 border border-emerald-500/20 rounded-md text-xs font-bold text-emerald-600 shadow-sm hover:shadow-md transition-all duration-300">
+                  <Shield className="h-3 w-3" />
+                  <span>SOC 2</span>
+                </div>
+                <div className="flex items-center space-x-1 px-2 py-1 bg-gradient-to-r from-blue-500/10 via-cyan-500/8 to-blue-500/10 border border-blue-500/20 rounded-md text-xs font-bold text-blue-600 shadow-sm hover:shadow-md transition-all duration-300">
+                  <Bot className="h-3 w-3" />
+                  <span>Verified</span>
+                </div>
+                <div className="flex items-center space-x-1 px-2 py-1 bg-gradient-to-r from-purple-500/10 via-violet-500/8 to-purple-500/10 border border-purple-500/20 rounded-md text-xs font-bold text-purple-600 shadow-sm hover:shadow-md transition-all duration-300">
+                  <Zap className="h-3 w-3" />
+                  <span>99.9% SLA</span>
+                </div>
+              </div>
+            </div>            {/* Compact Fortune 500 Features Showcase */}
+            <div className="grid grid-cols-2 gap-2 mt-5">
+              <div className="feature-card group flex items-center space-x-2 p-2.5 rounded-lg bg-gradient-to-br from-primary/8 via-primary/5 to-primary/3 border border-primary/12 hover:border-primary/25 transition-all duration-300 hover:shadow-md hover:shadow-primary/10">
+                <div className="flex-shrink-0 w-7 h-7 bg-gradient-to-br from-primary/15 to-primary/25 rounded-md flex items-center justify-center group-hover:bg-gradient-to-br group-hover:from-primary/25 group-hover:to-primary/35 transition-all duration-300 shadow-sm">
+                  <Bot className="h-3.5 w-3.5 text-primary" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-xs text-foreground">AI Assistant</h3>
+                  <p className="text-xs text-muted-foreground font-medium">GPT-4</p>
+                </div>
+              </div>
+              
+              <div className="feature-card group flex items-center space-x-2 p-2.5 rounded-lg bg-gradient-to-br from-secondary/8 via-secondary/5 to-secondary/3 border border-secondary/12 hover:border-secondary/25 transition-all duration-300 hover:shadow-md hover:shadow-secondary/10">
+                <div className="flex-shrink-0 w-7 h-7 bg-gradient-to-br from-secondary/15 to-secondary/25 rounded-md flex items-center justify-center group-hover:bg-gradient-to-br group-hover:from-secondary/25 group-hover:to-secondary/35 transition-all duration-300 shadow-sm">
+                  <Shield className="h-3.5 w-3.5 text-secondary" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-xs text-foreground">Security</h3>
+                  <p className="text-xs text-muted-foreground font-medium">Enterprise</p>
+                </div>
+              </div>
+              
+              <div className="feature-card group flex items-center space-x-2 p-2.5 rounded-lg bg-gradient-to-br from-accent/8 via-accent/5 to-accent/3 border border-accent/12 hover:border-accent/25 transition-all duration-300 hover:shadow-md hover:shadow-accent/10">
+                <div className="flex-shrink-0 w-7 h-7 bg-gradient-to-br from-accent/15 to-accent/25 rounded-md flex items-center justify-center group-hover:bg-gradient-to-br group-hover:from-accent/25 group-hover:to-accent/35 transition-all duration-300 shadow-sm">
+                  <Zap className="h-3.5 w-3.5 text-accent" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-xs text-foreground">Performance</h3>
+                  <p className="text-xs text-muted-foreground font-medium">Ultra-fast</p>
+                </div>
+              </div>
+              
+              <div className="feature-card group flex items-center space-x-2 p-2.5 rounded-lg bg-gradient-to-br from-chart-1/8 via-chart-1/5 to-chart-1/3 border border-chart-1/12 hover:border-chart-1/25 transition-all duration-300 hover:shadow-md hover:shadow-chart-1/10">
+                <div className="flex-shrink-0 w-7 h-7 bg-gradient-to-br from-chart-1/15 to-chart-1/25 rounded-md flex items-center justify-center group-hover:bg-gradient-to-br group-hover:from-chart-1/25 group-hover:to-chart-1/35 transition-all duration-300 shadow-sm">
+                  <Users className="h-3.5 w-3.5 text-chart-1" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-xs text-foreground">Scale</h3>
+                  <p className="text-xs text-muted-foreground font-medium">10M+ users</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Compact Fortune 500 Statistics Display */}
+            <div className="mt-5 flex justify-center lg:justify-start space-x-4 text-center lg:text-left">
+              <div className="space-y-0.5">
+                <div className="text-xl font-black bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent drop-shadow-sm">10M+</div>
+                <div className="text-xs text-muted-foreground font-bold">Users</div>
+              </div>
+              <div className="w-px bg-gradient-to-b from-transparent via-border to-transparent"></div>
+              <div className="space-y-0.5">
+                <div className="text-xl font-black bg-gradient-to-r from-secondary to-accent bg-clip-text text-transparent drop-shadow-sm">500K+</div>
+                <div className="text-xs text-muted-foreground font-bold">Servers</div>
+              </div>
+              <div className="w-px bg-gradient-to-b from-transparent via-border to-transparent"></div>
+              <div className="space-y-0.5">
+                <div className="text-xl font-black bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent drop-shadow-sm">99.9%</div>
+                <div className="text-xs text-muted-foreground font-bold">Uptime</div>
+              </div>
+            </div>
+
+            {/* Professional Add Bot & Action Buttons */}
+            <div className="mt-6 flex flex-col space-y-3">
+              {/* Add Bot to Server Button */}
+              <Button 
+                onClick={() => window.open('https://discord.com/api/oauth2/authorize?client_id=YOUR_BOT_CLIENT_ID&permissions=8&scope=bot%20applications.commands', '_blank')}
+                className="w-full h-10 bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white font-bold transition-all duration-300 transform hover:scale-[1.02] shadow-lg hover:shadow-xl relative overflow-hidden group"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                <Bot className="w-4 h-4 mr-2 z-10" />
+                <span className="z-10">Add Bot to Server</span>
+              </Button>
+
+              {/* Quick Actions */}
+              <div className="grid grid-cols-2 gap-2">
+                <Button 
+                  variant="outline"
+                  size="sm"
+                  onClick={() => window.open('https://discord.gg/piwpiw', '_blank')}
+                  className="h-9 bg-gradient-to-r from-blue-50/80 to-indigo-50/80 border-2 border-blue-200/60 hover:border-blue-300/80 text-blue-700 font-semibold hover:bg-gradient-to-r hover:from-blue-100/90 hover:to-indigo-100/90 transition-all duration-300 relative overflow-hidden group"
+                >
+                  <Users className="w-3.5 h-3.5 mr-1.5" />
+                  <span className="text-xs">Support</span>
+                </Button>
+                
+                <Button 
+                  variant="outline"
+                  size="sm"
+                  onClick={() => window.open('/docs', '_blank')}
+                  className="h-9 bg-gradient-to-r from-purple-50/80 to-violet-50/80 border-2 border-purple-200/60 hover:border-purple-300/80 text-purple-700 font-semibold hover:bg-gradient-to-r hover:from-purple-100/90 hover:to-violet-100/90 transition-all duration-300 relative overflow-hidden group"
+                >
+                  <Globe className="w-3.5 h-3.5 mr-1.5" />
+                  <span className="text-xs">Docs</span>
+                </Button>
+              </div>
+
+              {/* Premium/Pro Banner */}
+              <div className="mt-4 p-3 bg-gradient-to-r from-amber-50/90 via-yellow-50/90 to-orange-50/90 border-2 border-amber-200/60 rounded-lg relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-r from-amber-100/30 to-orange-100/30"></div>
+                <div className="relative flex items-center justify-between">
+                  <div className="flex items-center space-x-2">
+                    <div className="w-6 h-6 bg-gradient-to-br from-amber-500 to-orange-500 rounded-full flex items-center justify-center">
+                      <Zap className="w-3.5 h-3.5 text-white" />
+                    </div>
+                    <div>
+                      <div className="text-xs font-black text-amber-800">PIWPIW PRO</div>
+                      <div className="text-xs text-amber-700 font-medium">Unlock premium features</div>
+                    </div>
+                  </div>
+                  <Button 
+                    size="sm"
+                    className="h-7 px-3 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white font-bold text-xs"
+                  >
+                    Upgrade
+                  </Button>
+                </div>
+              </div>
+            </div>
+
+            {/* Compact Executive Testimonial */}
+            <div className="mt-5 p-3 bg-gradient-to-br from-slate-50/12 via-white/8 to-slate-100/6 border border-white/20 rounded-lg backdrop-blur-md shadow-md">
+              <blockquote className="text-xs italic text-muted-foreground font-medium leading-relaxed">
+                "PiwPiw has transformed our Discord infrastructure with exceptional AI capabilities and enterprise-grade reliability."
+              </blockquote>
+              <div className="flex items-center mt-2 space-x-2">
+                <div className="w-6 h-6 bg-gradient-to-br from-primary via-secondary to-accent rounded-full flex items-center justify-center shadow-sm">
+                  <span className="text-xs font-black text-white">A</span>
+                </div>
+                <div className="text-xs">
+                  <div className="font-black text-foreground">Alex Chen</div>
+                  <div className="text-muted-foreground font-semibold">CTO, TechCorp</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Right side - Compact Professional Login Form */}
+        <div className="flex justify-center lg:justify-end">
+          <Card className="w-full max-w-sm bg-white/95 backdrop-blur-xl border border-white/30 shadow-2xl rounded-2xl relative overflow-hidden hover:shadow-3xl transition-all duration-300">
+            {/* Professional Header Bar */}
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600"></div>
+            
+            <CardHeader className="space-y-4 text-center pb-6 pt-8">
+              <div className="mx-auto w-16 h-16 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center mb-4 shadow-lg relative">
+                <Bot className="h-8 w-8 text-white" />
+                <div className="absolute -top-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full border-2 border-white animate-pulse"></div>
+              </div>
+              
+              <div className="space-y-2">
+                <CardTitle className="text-2xl font-bold text-gray-900">
+                  Login to PiwPiw
+                </CardTitle>
+                <CardDescription className="text-gray-600 font-medium">
+                  Professional Discord Management
+                </CardDescription>
+              </div>
+            </CardHeader>
+                
+                {/* Compact Trust Indicators */}
+                <div className="flex items-center justify-center space-x-2 text-xs text-muted-foreground/75 mt-2">
+                  <div className="flex items-center space-x-0.5">
+                    <Shield className="h-3 w-3 text-emerald-500" />
+                    <span className="font-bold">SSL</span>
+                  </div>
+                  <div className="w-1 h-1 bg-muted-foreground/40 rounded-full"></div>
+                  <div className="flex items-center space-x-0.5">
+                    <span className="font-bold">SOC 2</span>
+                  </div>
+                </div>
+              </div>
+            
+            <CardContent className="space-y-6 px-8 pb-8">
+              {/* Professional Discord Login Button */}
+              <Button 
+                onClick={handleDiscordLogin}
+                className="w-full h-12 bg-[#5865F2] hover:bg-[#4752C4] text-white font-semibold transition-all duration-200 shadow-lg hover:shadow-xl"
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <div className="flex items-center space-x-2">
+                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                    <span>Connecting...</span>
+                  </div>
+                ) : (
+                  <>
+                    <svg className="w-5 h-5 mr-3" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.211.375-.445.865-.608 1.249a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.249a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028a14.09 14.09 0 0 0 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.196.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.892a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418Z"/>
+                    </svg>
+                    Continue with Discord
+                  </>
+                )}
+              </Button>
+              
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <span className="w-full border-t border-gray-200" />
+                </div>
+                <div className="relative flex justify-center text-sm">
+                  <span className="bg-white px-4 text-gray-500 font-medium">
+                    Or use enterprise credentials
+                  </span>
+                </div>
+              </div>
+
+              {/* Professional Login Form */}
+              <form onSubmit={handleLogin} className="space-y-5">
+                <div className="space-y-2">
+                  <Label htmlFor="username" className="text-sm font-semibold text-gray-700">
+                    Username
+                  </Label>
+                  <div className="relative group">
+                  <Input
+                    id="username"
+                    type="text"
+                    placeholder="Enter your username or email"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    className="h-11 border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 rounded-lg bg-white transition-all duration-200"
+                    required
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="password" className="text-sm font-semibold text-gray-700">
+                    Password
+                  </Label>
+                  <Input
+                    id="password"
+                    type="password"
+                    placeholder="Enter your secure password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="h-11 border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 rounded-lg bg-white transition-all duration-200"
+                    required
+                  />
+                </div>
+
+                {/* Professional login options */}
+                <div className="flex items-center justify-between text-sm">
+                  <label className="flex items-center space-x-2 cursor-pointer">
+                    <input type="checkbox" className="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
+                    <span className="text-gray-600">Remember this device</span>
+                  </label>
+                  <a href="#" className="text-blue-600 hover:text-blue-500 font-semibold">
+                    Forgot password?
+                  </a>
+                </div>
+                
+                <Button 
+                  type="submit" 
+                  className="w-full h-12 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
+                  disabled={isLoading}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                  {isLoading ? (
+                    <div className="flex items-center justify-center z-10">
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                      <span>Authenticating...</span>
+                    </div>
+                  ) : (
+                    <div className="flex items-center justify-center z-10">
+                      <Shield className="w-4 h-4 mr-2" />
+                      <span>Secure Sign In</span>
+                    </div>
+                  )}
+                </Button>
+              </form>
+              
+              <div className="text-center space-y-3 pt-4 border-t border-muted-foreground/10">
+                {/* Professional support links */}
+                <div className="flex justify-center space-x-4 text-sm">
+                  <a href="#" className="text-primary hover:text-primary/80 font-medium transition-colors duration-200 hover:underline">
+                    Need Help?
+                  </a>
+                  <div className="w-px h-4 bg-muted-foreground/30"></div>
+                  <a href="#" className="text-primary hover:text-primary/80 font-medium transition-colors duration-200 hover:underline">
+                    Create Account
+                  </a>
+                </div>
+                
+                {/* Enhanced Trust indicators */}
+                <div className="grid grid-cols-3 gap-2 pt-3 text-xs text-muted-foreground/70">
+                  <div className="flex flex-col items-center space-y-1 p-2 rounded-lg bg-muted/20 hover:bg-muted/30 transition-colors duration-200">
+                    <Shield className="h-4 w-4 text-green-500" />
+                    <span className="font-medium">SSL Secured</span>
+                  </div>
+                  <div className="flex flex-col items-center space-y-1 p-2 rounded-lg bg-muted/20 hover:bg-muted/30 transition-colors duration-200">
+                    <Bot className="h-4 w-4 text-primary" />
+                    <span className="font-medium">Discord Verified</span>
+                  </div>
+                  <div className="flex flex-col items-center space-y-1 p-2 rounded-lg bg-muted/20 hover:bg-muted/30 transition-colors duration-200">
+                    <Zap className="h-4 w-4 text-accent" />
+                    <span className="font-medium">24/7 Support</span>
+                  </div>
+                </div>
+
+                {/* Professional footer */}
+                <div className="pt-3 text-xs text-muted-foreground/60 border-t border-muted-foreground/5">
+                  <p>By signing in, you agree to our <a href="#" className="text-primary hover:underline">Terms of Service</a> and <a href="#" className="text-primary hover:underline">Privacy Policy</a></p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default LoginPage;
+

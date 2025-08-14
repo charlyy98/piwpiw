@@ -1,0 +1,790 @@
+{
+  "user": {
+    "id": "123456789",
+    "username": "PiwPiwUser",
+    "avatar": "https://cdn.discordapp.com/avatars/123456789/avatar.png",
+    "discriminator": "1234",
+    "email": "user@example.com"
+  },
+  "stats": {
+    "totalServers": 42,
+    "activeUsers": 1337,
+    "commandsUsed": 9999,
+    "uptime": "99.9%"
+  },
+  "servers": [
+    {
+      "id": "987654321",
+      "name": "Gaming Community",
+      "icon": "https://cdn.discordapp.com/icons/987654321/icon.png",
+      "memberCount": 250,
+      "channelCount": 15,
+      "roleCount": 8,
+      "botAdded": true,
+      "permissions": ["ADMINISTRATOR"]
+    },
+    {
+      "id": "876543210",
+      "name": "Study Group",
+      "icon": "https://cdn.discordapp.com/icons/876543210/icon.png",
+      "memberCount": 45,
+      "channelCount": 6,
+      "roleCount": 3,
+      "botAdded": false,
+      "permissions": ["MANAGE_GUILD", "MANAGE_CHANNELS"]
+    },
+    {
+      "id": "765432109",
+      "name": "Art & Design",
+      "icon": "https://cdn.discordapp.com/icons/765432109/icon.png",
+      "memberCount": 180,
+      "channelCount": 12,
+      "roleCount": 6,
+      "botAdded": true,
+      "permissions": ["MANAGE_GUILD"]
+    },
+    {
+      "id": "654321098",
+      "name": "Tech Support",
+      "icon": "https://cdn.discordapp.com/icons/654321098/icon.png",
+      "memberCount": 320,
+      "channelCount": 18,
+      "roleCount": 10,
+      "botAdded": true,
+      "permissions": ["ADMINISTRATOR"]
+    },
+    {
+      "id": "543210987",
+      "name": "Music Lovers",
+      "icon": "https://cdn.discordapp.com/icons/543210987/icon.png",
+      "memberCount": 150,
+      "channelCount": 8,
+      "roleCount": 5,
+      "botAdded": false,
+      "permissions": ["MANAGE_GUILD"]
+    },
+    {
+      "id": "432109876",
+      "name": "Anime Discussion",
+      "icon": "https://cdn.discordapp.com/icons/432109876/icon.png",
+      "memberCount": 280,
+      "channelCount": 20,
+      "roleCount": 12,
+      "botAdded": true,
+      "permissions": ["ADMINISTRATOR"]
+    }
+  ],
+  "commands": [
+    {
+      "name": "truth",
+      "category": "Games",
+      "description": "Get a random truth question",
+      "usage": "Ptruth",
+      "examples": ["Ptruth"],
+      "usageCount": 1250
+    },
+    {
+      "name": "dare",
+      "category": "Games",
+      "description": "Get a random dare challenge",
+      "usage": "Pdare",
+      "examples": ["Pdare"],
+      "usageCount": 980
+    },
+    {
+      "name": "wouldyou",
+      "category": "Games",
+      "description": "Get a would you rather question",
+      "usage": "Pwouldyou",
+      "examples": ["Pwouldyou"],
+      "usageCount": 750
+    },
+    {
+      "name": "points",
+      "category": "Economy",
+      "description": "Check your points balance",
+      "usage": "Ppoints [user]",
+      "examples": ["Ppoints", "Ppoints @user"],
+      "usageCount": 2100
+    },
+    {
+      "name": "shop",
+      "category": "Economy",
+      "description": "View the server shop",
+      "usage": "Pshop",
+      "examples": ["Pshop"],
+      "usageCount": 650
+    },
+    {
+      "name": "help",
+      "category": "Utility",
+      "description": "Get help with bot commands",
+      "usage": "Phelp [command]",
+      "examples": ["Phelp", "Phelp truth"],
+      "usageCount": 1800
+    },
+    {
+      "name": "ahla",
+      "category": "Games",
+      "description": "Get the most beautiful/handsome person in the server",
+      "usage": "Pahla",
+      "examples": ["Pahla"],
+      "usageCount": 245
+    },
+    {
+      "name": "debate",
+      "category": "Games",
+      "description": "Start a debate topic with the community",
+      "usage": "Pdebate [topic]",
+      "examples": ["Pdebate", "Pdebate Is pineapple on pizza good?"],
+      "usageCount": 189
+    },
+    {
+      "name": "t9darTdir",
+      "category": "Games",
+      "description": "Test your abilities - Can you do this challenge?",
+      "usage": "Pt9darTdir",
+      "examples": ["Pt9darTdir"],
+      "usageCount": 156
+    },
+    {
+      "name": "mowazi",
+      "category": "Games",
+      "description": "Get random balance/equality questions and challenges",
+      "usage": "Pmowazi",
+      "examples": ["Pmowazi"],
+      "usageCount": 134
+    },
+    {
+      "name": "neverhaveiever",
+      "category": "Games",
+      "description": "Play Never Have I Ever game with friends",
+      "usage": "Pneverhaveiever",
+      "examples": ["Pneverhaveiever"],
+      "usageCount": 298
+    },
+    {
+      "name": "top",
+      "category": "Utility",
+      "description": "View top users in various categories",
+      "usage": "Ptop [category]",
+      "examples": ["Ptop", "Ptop points", "Ptop messages"],
+      "usageCount": 421
+    },
+    {
+      "name": "categorytop",
+      "category": "Utility",
+      "description": "View top users in specific game categories",
+      "usage": "Pcategorytop [game]",
+      "examples": ["Pcategorytop", "Pcategorytop truth", "Pcategorytop dare"],
+      "usageCount": 187
+    },
+    {
+      "name": "profile",
+      "category": "Utility",
+      "description": "View your or someone's profile with statistics",
+      "usage": "Pprofile [user]",
+      "examples": ["Pprofile", "Pprofile @user"],
+      "usageCount": 672
+    },
+    {
+      "name": "buy",
+      "category": "Economy",
+      "description": "Purchase items, roles, and upgrades from the server economy shop using your points",
+      "usage": "Pbuy [item] [quantity]",
+      "examples": ["Pbuy role", "Pbuy custom_title 1", "Pbuy premium_badge"],
+      "usageCount": 234
+    },
+    {
+      "name": "report",
+      "category": "Utility",
+      "description": "Report issues, bugs, or inappropriate behavior",
+      "usage": "Preport [description]",
+      "examples": ["Preport Bug in points command", "Preport Spam in #general"],
+      "usageCount": 89
+    },
+    {
+      "name": "feedback",
+      "category": "Utility",
+      "description": "Send feedback and suggestions to improve the bot",
+      "usage": "Pfeedback [message]",
+      "examples": ["Pfeedback Great bot!", "Pfeedback Add more games please"],
+      "usageCount": 156
+    },
+    {
+      "name": "addtruth",
+      "category": "Add Questions",
+      "description": "Add a custom truth question to the bot's database for everyone to enjoy",
+      "usage": "Paddtruth [question]",
+      "examples": ["Paddtruth What's your biggest fear?", "Paddtruth Have you ever lied to your best friend?"],
+      "usageCount": 89
+    },
+    {
+      "name": "adddare",
+      "category": "Add Questions",
+      "description": "Add a custom dare challenge to the bot's database for everyone to try",
+      "usage": "Padddare [dare]",
+      "examples": ["Padddare Sing your favorite song", "Padddare Do 10 pushups"],
+      "usageCount": 67
+    },
+    {
+      "name": "adddebate",
+      "category": "Add Questions",
+      "description": "Add a custom debate topic to the bot's database for community discussions",
+      "usage": "Padddebate [topic]",
+      "examples": ["Padddebate Is social media good or bad for society?", "Padddebate Should students wear uniforms?"],
+      "usageCount": 45
+    },
+    {
+      "name": "addt9darTdir",
+      "category": "Add Questions",
+      "description": "Add a custom challenge question to test people's abilities",
+      "usage": "Paddt9darTdir [challenge]",
+      "examples": ["Paddt9darTdir Can you solve this math problem in 30 seconds?", "Paddt9darTdir Can you name 10 countries in Africa?"],
+      "usageCount": 34
+    },
+    {
+      "name": "addahla",
+      "category": "Add Questions",
+      "description": "Add a custom compliment or beauty question to the bot's database",
+      "usage": "Paddahla [question]",
+      "examples": ["Paddahla Who has the best smile in the server?", "Paddahla Who would be the best model?"],
+      "usageCount": 52
+    },
+    {
+      "name": "addmowazi",
+      "category": "Add Questions",
+      "description": "Add a custom balance/equality question for fair comparisons",
+      "usage": "Paddmowazi [question]",
+      "examples": ["Paddmowazi Coffee or tea?", "Paddmowazi Summer or winter vacation?"],
+      "usageCount": 28
+    },
+    {
+      "name": "addneverhaveiever",
+      "category": "Add Questions",
+      "description": "Add a custom 'Never Have I Ever' statement to the game database",
+      "usage": "Paddneverhaveiever [statement]",
+      "examples": ["Paddneverhaveiever Never have I ever traveled to another country", "Paddneverhaveiever Never have I ever stayed up all night"],
+      "usageCount": 41
+    },
+    {
+      "name": "minigames",
+      "category": "MiniGames",
+      "description": "عرض قائمة بجميع الألعاب المصغرة المتاحة للعب",
+      "usage": "Pminigames",
+      "examples": ["Pminigames"],
+      "usageCount": 245
+    },
+    {
+      "name": "rps",
+      "category": "MiniGames",
+      "description": "لعبة حجر ورقة مقص كلاسيكية - يمكن لعبها منفرداً أو ضد عضو آخر",
+      "usage": "Prps or Prps @user",
+      "examples": ["Prps", "Prps @john"],
+      "usageCount": 512
+    },
+    {
+      "name": "guess",
+      "category": "MiniGames",
+      "description": "لعبة تخمين الأرقام - خمن الرقم السري أو تحدى عضو آخر",
+      "usage": "Pguess or Pguess @user",
+      "examples": ["Pguess", "Pguess @sara"],
+      "usageCount": 387
+    },
+    {
+      "name": "quick",
+      "category": "MiniGames",
+      "description": "لعبة سرعة البديهة - اكتب الكلمة بأسرع وقت أو تحدى الآخرين",
+      "usage": "Pquick or Pquick @user",
+      "examples": ["Pquick", "Pquick @mike"],
+      "usageCount": 298
+    },
+    {
+      "name": "trivia",
+      "category": "MiniGames",
+      "description": "أسئلة ثقافية متنوعة - اختبر معلوماتك أو تحدى الأصدقاء",
+      "usage": "Ptrivia or Ptrivia @user",
+      "examples": ["Ptrivia", "Ptrivia @alex"],
+      "usageCount": 445
+    },
+    {
+      "name": "truefalse",
+      "category": "MiniGames",
+      "description": "لعبة صح أم خطأ - أسئلة سريعة ومثيرة للاهتمام",
+      "usage": "Ptruefalse or Ptruefalse @user",
+      "examples": ["Ptruefalse", "Ptruefalse @emma"],
+      "usageCount": 321
+    },
+    {
+      "name": "emojisecret",
+      "category": "MiniGames",
+      "description": "لعبة تخمين الإيموجي السري - حل اللغز أو تحدى الآخرين",
+      "usage": "Pemojisecret or Pemojisecret @user",
+      "examples": ["Pemojisecret", "Pemojisecret @david"],
+      "usageCount": 267
+    },
+    {
+      "name": "colormemory",
+      "category": "MiniGames",
+      "description": "لعبة ذاكرة الألوان - احفظ التسلسل وكرره بنفس الترتيب",
+      "usage": "Pcolormemory or Pcolormemory @user",
+      "examples": ["Pcolormemory", "Pcolormemory @lily"],
+      "usageCount": 189
+    },
+    {
+      "name": "fastclick",
+      "category": "MiniGames",
+      "description": "لعبة النقر السريع - تحدى عضو آخر في سرعة النقر",
+      "usage": "Pfastclick @user",
+      "examples": ["Pfastclick @ryan", "Pfastclick @anna"],
+      "usageCount": 156
+    },
+    {
+      "name": "detective",
+      "category": "Detective",
+      "description": "بدء لعبة المحقق - حل الألغاز واكتشف الجاني",
+      "usage": "Pdetective",
+      "examples": ["Pdetective"],
+      "usageCount": 234
+    },
+    {
+      "name": "detective_start",
+      "category": "Detective",
+      "description": "بدء قضية جديدة بمستوى صعوبة محدد",
+      "usage": "Pdetective start <level>",
+      "examples": ["Pdetective start easy", "Pdetective start medium", "Pdetective start hard"],
+      "usageCount": 189
+    },
+    {
+      "name": "detective_join",
+      "category": "Detective",
+      "description": "انضمام إلى لعبة محقق جارية في الخادم",
+      "usage": "Pdetective join",
+      "examples": ["Pdetective join"],
+      "usageCount": 167
+    },
+    {
+      "name": "detective_status",
+      "category": "Detective",
+      "description": "عرض حالة التحقيق الحالي والأدلة المجمعة",
+      "usage": "Pdetective status",
+      "examples": ["Pdetective status"],
+      "usageCount": 298
+    },
+    {
+      "name": "detective_investigate",
+      "category": "Detective",
+      "description": "فحص دليل معين للحصول على معلومات مهمة",
+      "usage": "Pdetective investigate <clue_id>",
+      "examples": ["Pdetective investigate 1", "Pdetective investigate fingerprint"],
+      "usageCount": 245
+    },
+    {
+      "name": "detective_interview",
+      "category": "Detective",
+      "description": "استجواب مشتبه به للحصول على معلومات",
+      "usage": "Pdetective interview <suspect_id>",
+      "examples": ["Pdetective interview 1", "Pdetective interview john"],
+      "usageCount": 201
+    },
+    {
+      "name": "detective_accuse",
+      "category": "Detective",
+      "description": "اتهام مشتبه به - كن حذراً فقد تخسر النقاط!",
+      "usage": "Pdetective accuse <suspect_id>",
+      "examples": ["Pdetective accuse 2", "Pdetective accuse sarah"],
+      "usageCount": 134
+    },
+    {
+      "name": "detective_solve",
+      "category": "Detective",
+      "description": "محاولة حل القضية بناءً على الأدلة المجمعة",
+      "usage": "Pdetective solve",
+      "examples": ["Pdetective solve"],
+      "usageCount": 178
+    },
+    {
+      "name": "detective_quit",
+      "category": "Detective",
+      "description": "الخروج من لعبة التحقيق الحالية",
+      "usage": "Pdetective quit",
+      "examples": ["Pdetective quit"],
+      "usageCount": 89
+    },
+    {
+      "name": "addowner",
+      "category": "Owner/Admin",
+      "description": "إضافة مالك جديد للبوت - صلاحيات كاملة",
+      "usage": "Paddowner @user",
+      "examples": ["Paddowner @john", "Paddowner 123456789"],
+      "usageCount": 12
+    },
+    {
+      "name": "removeowner",
+      "category": "Owner/Admin", 
+      "description": "إزالة مالك من البوت",
+      "usage": "Premoveowner @user",
+      "examples": ["Premoveowner @john", "Premoveowner 123456789"],
+      "usageCount": 8
+    },
+    {
+      "name": "addadmin",
+      "category": "Owner/Admin",
+      "description": "إضافة مشرف جديد للبوت",
+      "usage": "Paddadmin @user",
+      "examples": ["Paddadmin @sara", "Paddadmin 987654321"],
+      "usageCount": 34
+    },
+    {
+      "name": "removeadmin",
+      "category": "Owner/Admin",
+      "description": "إزالة مشرف من البوت",
+      "usage": "Premoveadmin @user",
+      "examples": ["Premoveadmin @sara", "Premoveadmin 987654321"],
+      "usageCount": 18
+    },
+    {
+      "name": "addroleadmin",
+      "category": "Owner/Admin",
+      "description": "إضافة رتبة كمشرف في الخادم",
+      "usage": "Paddroleadmin @role",
+      "examples": ["Paddroleadmin @Moderator", "Paddroleadmin @Staff"],
+      "usageCount": 23
+    },
+    {
+      "name": "removeroleadmin",
+      "category": "Owner/Admin",
+      "description": "إزالة رتبة من قائمة المشرفين",
+      "usage": "Premoveroleadmin @role",
+      "examples": ["Premoveroleadmin @Moderator", "Premoveroleadmin @Staff"],
+      "usageCount": 15
+    },
+    {
+      "name": "setavatar",
+      "category": "Owner/Admin",
+      "description": "تغيير صورة البوت الشخصية",
+      "usage": "Psetavatar [image_url]",
+      "examples": ["Psetavatar https://example.com/avatar.png"],
+      "usageCount": 45
+    },
+    {
+      "name": "setbanner",
+      "category": "Owner/Admin",
+      "description": "تغيير بانر البوت",
+      "usage": "Psetbanner [image_url]",
+      "examples": ["Psetbanner https://example.com/banner.png"],
+      "usageCount": 28
+    },
+    {
+      "name": "searchpending",
+      "category": "Owner/Admin",
+      "description": "البحث في الطلبات المعلقة",
+      "usage": "Psearchpending [query]",
+      "examples": ["Psearchpending bug", "Psearchpending feature"],
+      "usageCount": 67
+    },
+    {
+      "name": "giftp",
+      "category": "Owner/Admin",
+      "description": "إهداء نقاط لمستخدم معين",
+      "usage": "Pgiftp @user <amount>",
+      "examples": ["Pgiftp @john 1000", "Pgiftp @sara 500"],
+      "usageCount": 89
+    },
+    {
+      "name": "gifp",
+      "category": "Owner/Admin",
+      "description": "إهداء نقاط لجميع الأعضاء",
+      "usage": "Pgifp <amount>",
+      "examples": ["Pgifp 100", "Pgifp 250"],
+      "usageCount": 56
+    },
+    {
+      "name": "addcustom",
+      "category": "Owner/Admin",
+      "description": "إضافة أمر مخصص جديد",
+      "usage": "Paddcustom <name> <response>",
+      "examples": ["Paddcustom hello Welcome to our server!", "Paddcustom rules Please follow server rules"],
+      "usageCount": 78
+    },
+    {
+      "name": "delcustom",
+      "category": "Owner/Admin",
+      "description": "حذف أمر مخصص",
+      "usage": "Pdelcustom <name>",
+      "examples": ["Pdelcustom hello", "Pdelcustom rules"],
+      "usageCount": 42
+    },
+    {
+      "name": "listcustom",
+      "category": "Owner/Admin",
+      "description": "عرض قائمة الأوامر المخصصة",
+      "usage": "Plistcustom",
+      "examples": ["Plistcustom"],
+      "usageCount": 134
+    },
+    {
+      "name": "review",
+      "category": "Owner/Admin",
+      "description": "مراجعة الطلبات والتقارير",
+      "usage": "Preview [id]",
+      "examples": ["Preview 123", "Preview latest"],
+      "usageCount": 156
+    },
+    {
+      "name": "accept",
+      "category": "Owner/Admin",
+      "description": "قبول طلب أو تقرير",
+      "usage": "Paccept <id>",
+      "examples": ["Paccept 123", "Paccept 456"],
+      "usageCount": 98
+    },
+    {
+      "name": "reject",
+      "category": "Owner/Admin",
+      "description": "رفض طلب أو تقرير",
+      "usage": "Preject <id> [reason]",
+      "examples": ["Preject 123", "Preject 456 Invalid request"],
+      "usageCount": 67
+    },
+    {
+      "name": "addshopitem",
+      "category": "Owner/Admin",
+      "description": "إضافة عنصر جديد للمتجر",
+      "usage": "Paddshopitem <name> <price> <description>",
+      "examples": ["Paddshopitem VIP_Role 1000 Special VIP role", "Paddshopitem Custom_Color 500 Custom name color"],
+      "usageCount": 43
+    },
+    {
+      "name": "removeshopitem",
+      "category": "Owner/Admin",
+      "description": "إزالة عنصر من المتجر",
+      "usage": "Premoveshopitem <name>",
+      "examples": ["Premoveshopitem VIP_Role", "Premoveshopitem Custom_Color"],
+      "usageCount": 25
+    },
+    {
+      "name": "updateshopitem",
+      "category": "Owner/Admin",
+      "description": "تحديث عنصر في المتجر",
+      "usage": "Pupdateshopitem <name> <field> <value>",
+      "examples": ["Pupdateshopitem VIP_Role price 1200", "Pupdateshopitem Custom_Color description New custom color"],
+      "usageCount": 31
+    },
+    {
+      "name": "listfeedback",
+      "category": "Owner/Admin",
+      "description": "عرض قائمة التعليقات والاقتراحات",
+      "usage": "Plistfeadback [filter]",
+      "examples": ["Plistfeadback", "Plistfeadback recent", "Plistfeadback bug"],
+      "usageCount": 87
+    },
+    {
+      "name": "fixlevels",
+      "category": "Owner/Admin",
+      "description": "إصلاح مشاكل نظام المستويات",
+      "usage": "Pfixlevels [user]",
+      "examples": ["Pfixlevels", "Pfixlevels @john"],
+      "usageCount": 19
+    },
+    {
+      "name": "fixtitles",
+      "category": "Owner/Admin",
+      "description": "إصلاح مشاكل الألقاب والعناوين",
+      "usage": "Pfixtitles [user]",
+      "examples": ["Pfixtitles", "Pfixtitles @sara"],
+      "usageCount": 14
+    },
+    {
+      "name": "debuglevel",
+      "category": "Owner/Admin",
+      "description": "فحص وتشخيص مشاكل المستويات",
+      "usage": "Pdebuglevel @user",
+      "examples": ["Pdebuglevel @john", "Pdebuglevel @sara"],
+      "usageCount": 22
+    }
+  ],
+  "userGrowth": {
+    "7d": [
+      { "date": "Jan 23", "users": 45 },
+      { "date": "Jan 24", "users": 52 },
+      { "date": "Jan 25", "users": 48 },
+      { "date": "Jan 26", "users": 61 },
+      { "date": "Jan 27", "users": 58 },
+      { "date": "Jan 28", "users": 67 },
+      { "date": "Jan 29", "users": 73 }
+    ],
+    "30d": [
+      { "date": "Jan 1", "users": 35 },
+      { "date": "Jan 5", "users": 42 },
+      { "date": "Jan 10", "users": 38 },
+      { "date": "Jan 15", "users": 55 },
+      { "date": "Jan 20", "users": 48 },
+      { "date": "Jan 25", "users": 62 },
+      { "date": "Jan 29", "users": 73 }
+    ],
+    "90d": [
+      { "date": "Nov 1", "users": 25 },
+      { "date": "Nov 15", "users": 32 },
+      { "date": "Dec 1", "users": 38 },
+      { "date": "Dec 15", "users": 45 },
+      { "date": "Jan 1", "users": 52 },
+      { "date": "Jan 15", "users": 65 },
+      { "date": "Jan 29", "users": 73 }
+    ]
+  },
+  "commandUsage": [
+    { "command": "points", "count": 2100 },
+    { "command": "help", "count": 1800 },
+    { "command": "truth", "count": 1250 },
+    { "command": "dare", "count": 980 },
+    { "command": "wouldyou", "count": 750 },
+    { "command": "shop", "count": 650 },
+    { "command": "profile", "count": 672 },
+    { "command": "top", "count": 421 },
+    { "command": "neverhaveiever", "count": 298 },
+    { "command": "ahla", "count": 245 },
+    { "command": "buy", "count": 234 },
+    { "command": "debate", "count": 189 },
+    { "command": "categorytop", "count": 187 },
+    { "command": "t9darTdir", "count": 156 },
+    { "command": "feedback", "count": 156 },
+    { "command": "mowazi", "count": 134 },
+    { "command": "report", "count": 89 },
+    { "command": "addtruth", "count": 89 },
+    { "command": "adddare", "count": 67 },
+    { "command": "addahla", "count": 52 },
+    { "command": "adddebate", "count": 45 },
+    { "command": "addneverhaveiever", "count": 41 },
+    { "command": "addt9darTdir", "count": 34 },
+    { "command": "addmowazi", "count": 28 },
+    { "command": "minigames", "count": 245 },
+    { "command": "rps", "count": 512 },
+    { "command": "guess", "count": 387 },
+    { "command": "quick", "count": 298 },
+    { "command": "trivia", "count": 445 },
+    { "command": "truefalse", "count": 321 },
+    { "command": "emojisecret", "count": 267 },
+    { "command": "colormemory", "count": 189 },
+    { "command": "fastclick", "count": 156 },
+    { "command": "detective", "count": 234 },
+    { "command": "detective_start", "count": 189 },
+    { "command": "detective_join", "count": 167 },
+    { "command": "detective_status", "count": 298 },
+    { "command": "detective_investigate", "count": 245 },
+    { "command": "detective_interview", "count": 201 },
+    { "command": "detective_accuse", "count": 134 },
+    { "command": "detective_solve", "count": 178 },
+    { "command": "detective_quit", "count": 89 },
+    { "command": "addowner", "count": 12 },
+    { "command": "removeowner", "count": 8 },
+    { "command": "addadmin", "count": 34 },
+    { "command": "removeadmin", "count": 18 },
+    { "command": "addroleadmin", "count": 23 },
+    { "command": "removeroleadmin", "count": 15 },
+    { "command": "setavatar", "count": 45 },
+    { "command": "setbanner", "count": 28 },
+    { "command": "searchpending", "count": 67 },
+    { "command": "giftp", "count": 89 },
+    { "command": "gifp", "count": 56 },
+    { "command": "addcustom", "count": 78 },
+    { "command": "delcustom", "count": 42 },
+    { "command": "listcustom", "count": 134 },
+    { "command": "review", "count": 156 },
+    { "command": "accept", "count": 98 },
+    { "command": "reject", "count": 67 },
+    { "command": "addshopitem", "count": 43 },
+    { "command": "removeshopitem", "count": 25 },
+    { "command": "updateshopitem", "count": 31 },
+    { "command": "listfeedback", "count": 87 },
+    { "command": "fixlevels", "count": 19 },
+    { "command": "fixtitles", "count": 14 },
+    { "command": "debuglevel", "count": 22 }
+  ],
+  "analytics": {
+    "commandUsage": [
+      { "name": "points", "count": 2100 },
+      { "name": "help", "count": 1800 },
+      { "name": "truth", "count": 1250 },
+      { "name": "dare", "count": 980 },
+      { "name": "wouldyou", "count": 750 },
+      { "name": "shop", "count": 650 },
+      { "name": "profile", "count": 672 },
+      { "name": "top", "count": 421 },
+      { "name": "neverhaveiever", "count": 298 },
+      { "name": "ahla", "count": 245 },
+      { "name": "buy", "count": 234 },
+      { "name": "debate", "count": 189 },
+      { "name": "categorytop", "count": 187 },
+      { "name": "t9darTdir", "count": 156 },
+      { "name": "feedback", "count": 156 },
+      { "name": "mowazi", "count": 134 },
+      { "name": "report", "count": 89 },
+      { "name": "addtruth", "count": 89 },
+      { "name": "adddare", "count": 67 },
+      { "name": "addahla", "count": 52 },
+      { "name": "adddebate", "count": 45 },
+      { "name": "addneverhaveiever", "count": 41 },
+      { "name": "addt9darTdir", "count": 34 },
+      { "name": "addmowazi", "count": 28 },
+      { "name": "minigames", "count": 245 },
+      { "name": "rps", "count": 512 },
+      { "name": "guess", "count": 387 },
+      { "name": "quick", "count": 298 },
+      { "name": "trivia", "count": 445 },
+      { "name": "truefalse", "count": 321 },
+      { "name": "emojisecret", "count": 267 },
+      { "name": "colormemory", "count": 189 },
+      { "name": "fastclick", "count": 156 },
+      { "name": "detective", "count": 234 },
+      { "name": "detective_start", "count": 189 },
+      { "name": "detective_join", "count": 167 },
+      { "name": "detective_status", "count": 298 },
+      { "name": "detective_investigate", "count": 245 },
+      { "name": "detective_interview", "count": 201 },
+      { "name": "detective_accuse", "count": 134 },
+      { "name": "detective_solve", "count": 178 },
+      { "name": "detective_quit", "count": 89 },
+      { "name": "addowner", "count": 12 },
+      { "name": "removeowner", "count": 8 },
+      { "name": "addadmin", "count": 34 },
+      { "name": "removeadmin", "count": 18 },
+      { "name": "addroleadmin", "count": 23 },
+      { "name": "removeroleadmin", "count": 15 },
+      { "name": "setavatar", "count": 45 },
+      { "name": "setbanner", "count": 28 },
+      { "name": "searchpending", "count": 67 },
+      { "name": "giftp", "count": 89 },
+      { "name": "gifp", "count": 56 },
+      { "name": "addcustom", "count": 78 },
+      { "name": "delcustom", "count": 42 },
+      { "name": "listcustom", "count": 134 },
+      { "name": "review", "count": 156 },
+      { "name": "accept", "count": 98 },
+      { "name": "reject", "count": 67 },
+      { "name": "addshopitem", "count": 43 },
+      { "name": "removeshopitem", "count": 25 },
+      { "name": "updateshopitem", "count": 31 },
+      { "name": "listfeedback", "count": 87 },
+      { "name": "fixlevels", "count": 19 },
+      { "name": "fixtitles", "count": 14 },
+      { "name": "debuglevel", "count": 22 }
+    ],
+    "dailyUsers": [
+      { "date": "2025-01-23", "users": 45 },
+      { "date": "2025-01-24", "users": 52 },
+      { "date": "2025-01-25", "users": 48 },
+      { "date": "2025-01-26", "users": 61 },
+      { "date": "2025-01-27", "users": 58 },
+      { "date": "2025-01-28", "users": 67 },
+      { "date": "2025-01-29", "users": 73 }
+    ],
+    "serverGrowth": [
+      { "month": "Oct", "servers": 25 },
+      { "month": "Nov", "servers": 32 },
+      { "month": "Dec", "servers": 38 },
+      { "month": "Jan", "servers": 42 }
+    ]
+  }
+}
+
