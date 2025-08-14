@@ -37,9 +37,22 @@ export const AppProvider = ({ children }) => {
     if (savedUser) setUser(JSON.parse(savedUser));
   }, []);
 
-  // Apply theme to document
+  // Apply theme to document with proper initialization
   useEffect(() => {
-    document.documentElement.classList.toggle('dark', theme === 'dark');
+    // Remove any existing theme classes
+    document.documentElement.classList.remove('light', 'dark');
+    
+    // Apply the current theme
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else if (theme === 'light') {
+      document.documentElement.classList.add('light');
+    }
+    
+    // Also set a data attribute for additional styling if needed
+    document.documentElement.setAttribute('data-theme', theme);
+    
+    console.log('Theme applied:', theme, 'Classes:', document.documentElement.classList.toString());
   }, [theme]);
 
   const toggleLanguage = () => {
@@ -50,8 +63,17 @@ export const AppProvider = ({ children }) => {
 
   const toggleTheme = () => {
     const newTheme = theme === 'light' ? 'dark' : 'light';
+    console.log('Toggling theme from', theme, 'to', newTheme);
     setTheme(newTheme);
     localStorage.setItem('piwpiw-theme', newTheme);
+  };
+
+  const setThemeMode = (mode) => {
+    if (['light', 'dark', 'auto'].includes(mode)) {
+      console.log('Setting theme to:', mode);
+      setTheme(mode);
+      localStorage.setItem('piwpiw-theme', mode);
+    }
   };
 
   const login = (userData) => {
@@ -105,6 +127,7 @@ export const AppProvider = ({ children }) => {
     user,
     toggleLanguage,
     toggleTheme,
+    setThemeMode,
     login,
     logout,
     updateAvatar,

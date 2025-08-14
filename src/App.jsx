@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AppProvider, useApp } from './contexts/AppContext';
 import DashboardLayout from './components/DashboardLayout';
 import Dashboard from './components/Dashboard';
@@ -11,7 +11,7 @@ import LoginPage from './components/LoginPage';
 import './App.css';
 
 const AppContent = () => {
-  const { isAuthenticated } = useApp();
+  const { isAuthenticated, theme } = useApp();
   const [currentPage, setCurrentPage] = useState(() => {
     // Initialize from hash if present
     if (typeof window !== 'undefined') {
@@ -22,6 +22,12 @@ const AppContent = () => {
     return 'dashboard';
   });
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  // Debug theme changes
+  useEffect(() => {
+    console.log('AppContent theme changed to:', theme);
+    console.log('Document classes:', document.documentElement.classList.toString());
+  }, [theme]);
 
   // Listen for custom navigation events
   React.useEffect(() => {
