@@ -73,12 +73,30 @@ import {
   Save,
   X
 } from 'lucide-react';
+import { useUserGrowth, useCommandUsage, usePerformanceMetrics } from '../hooks/useApi';
 import mockData from '../data/mockData.json';
 
 const AnalyticsPage = () => {
   const { t } = useApp();
   const [timeRange, setTimeRange] = useState('7d');
   const [isLoading, setIsLoading] = useState(true);
+
+  // 🚀 NOW USING REAL ANALYTICS DATA!
+  const { data: realUserGrowth, loading: userGrowthLoading } = useUserGrowth(timeRange);
+  const { data: realCommands, loading: commandsLoading } = useCommandUsage();
+  const { data: realPerformanceMetrics, loading: performanceLoading } = usePerformanceMetrics();
+  
+  // Use real data - prioritize real data over mock
+  const commands = realCommands || mockData.commands;
+  const isUsingRealData = !!(realUserGrowth || realCommands || realPerformanceMetrics);
+  
+  console.log('📊 Analytics Page - Real Data Status:', {
+    realUserGrowth: !!realUserGrowth,
+    realCommands: !!realCommands,
+    realPerformanceMetrics: !!realPerformanceMetrics,
+    isUsingRealData,
+    commandsCount: commands?.length || 0
+  });
   const [animationKey, setAnimationKey] = useState(0);
 
   // Enhanced Professional Features
@@ -194,11 +212,11 @@ const AnalyticsPage = () => {
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [isLoading]);
 
-  // Enhanced data filtering
+  // Enhanced data filtering - NOW USING REAL DATA!
   const filteredData = useMemo(() => {
-    if (selectedCategory === 'all') return mockData.commands;
-    return mockData.commands.filter(cmd => cmd.category === selectedCategory);
-  }, [selectedCategory]);
+    if (selectedCategory === 'all') return commands;
+    return commands.filter(cmd => cmd.category === selectedCategory);
+  }, [selectedCategory, commands]);
 
   // Predictive analytics calculation
   const predictiveMetrics = useMemo(() => {
@@ -381,16 +399,31 @@ const AnalyticsPage = () => {
     });
   }, []);
 
-  // Manual refresh function
+  // Manual refresh function - Updated to refetch real data
   const handleManualRefresh = useCallback(() => {
+    console.log('🔄 Manual refresh triggered - fetching fresh real data...');
     setIsLoading(true);
     setLastUpdated(new Date());
     setAnimationKey(prev => prev + 1);
-    setTimeout(() => setIsLoading(false), 1000);
+    
+    // Force refetch of all real data
+    window.dispatchEvent(new CustomEvent('refreshAnalytics'));
+    
+    setTimeout(() => {
+      setIsLoading(false);
+      console.log('✅ Analytics manual refresh completed');
+    }, 1500);
   }, []);
 
-  // Enhanced pie chart data with better categorization
-  const commandCategoryData = mockData.commands.reduce((acc, command) => {
+  // Enhanced pie chart data with better categorization - NOW USING REAL DATA!
+  console.log('📊 Analytics Charts using data:', {
+    commandsSource: realCommands ? 'REAL BOT DATA' : 'MOCK DATA',
+    commandsCount: commands?.length || 0,
+    realPerformanceMetrics: !!realPerformanceMetrics,
+    realUserGrowth: !!realUserGrowth
+  });
+  
+  const commandCategoryData = commands.reduce((acc, command) => {
     const existing = acc.find(item => item.name === command.category);
     if (existing) {
       existing.value += command.usageCount;
@@ -406,9 +439,9 @@ const AnalyticsPage = () => {
     return acc;
   }, []);
 
-  // Calculate total commands and usage
-  const totalCommands = mockData.commands.length;
-  const totalUsage = mockData.commands.reduce((sum, cmd) => sum + cmd.usageCount, 0);
+  // Calculate total commands and usage - NOW USING REAL DATA!
+  const totalCommands = commands.length;
+  const totalUsage = commands.reduce((sum, cmd) => sum + cmd.usageCount, 0);
   const avgUsagePerCommand = Math.round(totalUsage / totalCommands);
 
   // Enhanced metrics calculation
@@ -416,8 +449,8 @@ const AnalyticsPage = () => {
   const mostPopularCategory = topCategories[0];
   const leastPopularCategory = topCategories[topCategories.length - 1];
 
-  // Enhanced data processing for better analytics
-  const commandsByCategory = mockData.commands.reduce((acc, command) => {
+  // Enhanced data processing for better analytics - NOW USING REAL DATA!
+  const commandsByCategory = commands.reduce((acc, command) => {
     if (!acc[command.category]) {
       acc[command.category] = [];
     }
@@ -427,34 +460,34 @@ const AnalyticsPage = () => {
 
   const colorSchemes = {
     blue: {
-      gradient: 'from-white via-blue-50/30 to-blue-100/50 dark:from-slate-900 dark:via-blue-950/30 dark:to-blue-900/30',
-      border: 'border-blue-500',
-      iconBg: 'bg-blue-100 dark:bg-blue-500/20 border border-blue-200 dark:border-blue-400/30',
-      iconColor: 'text-blue-600 dark:text-blue-400'
+      gradient: 'from-blue-300 via-blue-400 to-blue-500 dark:from-slate-900 dark:via-blue-950/30 dark:to-blue-900/30',
+      border: 'border-blue-600',
+      iconBg: 'bg-blue-500 dark:bg-blue-500/20 border border-blue-600 dark:border-blue-400/30',
+      iconColor: 'text-white dark:text-blue-400'
     },
     green: {
-      gradient: 'from-white via-green-50/30 to-green-100/50 dark:from-slate-900 dark:via-green-950/30 dark:to-green-900/30',
-      border: 'border-green-500',
-      iconBg: 'bg-green-100 dark:bg-green-500/20 border border-green-200 dark:border-green-400/30',
-      iconColor: 'text-green-600 dark:text-green-400'
+      gradient: 'from-green-300 via-green-400 to-green-500 dark:from-slate-900 dark:via-green-950/30 dark:to-green-900/30',
+      border: 'border-green-600',
+      iconBg: 'bg-green-500 dark:bg-green-500/20 border border-green-600 dark:border-green-400/30',
+      iconColor: 'text-white dark:text-green-400'
     },
     yellow: {
-      gradient: 'from-white via-yellow-50/30 to-yellow-100/50 dark:from-slate-900 dark:via-yellow-950/30 dark:to-yellow-900/30',
-      border: 'border-yellow-500',
-      iconBg: 'bg-yellow-100 dark:bg-yellow-500/20 border border-yellow-200 dark:border-yellow-400/30',
-      iconColor: 'text-yellow-600 dark:text-yellow-400'
+      gradient: 'from-orange-300 via-orange-400 to-orange-500 dark:from-slate-900 dark:via-yellow-950/30 dark:to-yellow-900/30',
+      border: 'border-orange-600',
+      iconBg: 'bg-orange-500 dark:bg-yellow-500/20 border border-orange-600 dark:border-yellow-400/30',
+      iconColor: 'text-white dark:text-yellow-400'
     },
     purple: {
-      gradient: 'from-white via-purple-50/30 to-purple-100/50 dark:from-slate-900 dark:via-purple-950/30 dark:to-purple-900/30',
-      border: 'border-purple-500',
-      iconBg: 'bg-purple-100 dark:bg-purple-500/20 border border-purple-200 dark:border-purple-400/30',
-      iconColor: 'text-purple-600 dark:text-purple-400'
+      gradient: 'from-purple-300 via-purple-400 to-purple-500 dark:from-slate-900 dark:via-purple-950/30 dark:to-purple-900/30',
+      border: 'border-purple-600',
+      iconBg: 'bg-purple-500 dark:bg-purple-500/20 border border-purple-600 dark:border-purple-400/30',
+      iconColor: 'text-white dark:text-purple-400'
     },
   };
 
   const mostPopularCommand = { name: 'N/A', usage: 0 };
-  if (mockData.commands.length > 0) {
-    const sortedCommands = [...mockData.commands].sort((a, b) => b.usageCount - a.usageCount);
+  if (commands.length > 0) {
+    const sortedCommands = [...commands].sort((a, b) => b.usageCount - a.usageCount);
     mostPopularCommand.name = sortedCommands[0].name;
     mostPopularCommand.usage = sortedCommands[0].usageCount;
   }
@@ -775,9 +808,21 @@ const AnalyticsPage = () => {
                 <div className="p-2 bg-primary/10 rounded-xl">
                   <BarChart3 className="h-6 w-6 text-primary" />
                 </div>
-                <h2 className="text-3xl font-bold piwpiw-text-gradient">
-                  Professional Analytics
-                </h2>
+                <div className="flex items-center gap-3">
+                  <h2 className="text-3xl font-bold piwpiw-text-gradient">
+                    Professional Analytics
+                  </h2>
+                  {isUsingRealData && (
+                    <Badge className="bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400 border-green-200 dark:border-green-800">
+                      ✅ Real Data
+                    </Badge>
+                  )}
+                  {(userGrowthLoading || commandsLoading || performanceLoading) && (
+                    <Badge className="bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400 border-blue-200 dark:border-blue-800 animate-pulse">
+                      🔄 Loading...
+                    </Badge>
+                  )}
+                </div>
                 <div className="flex items-center space-x-2">
                   {connectionStatus === 'connected' && (
                     <div className="flex items-center space-x-1 text-green-600">
@@ -839,7 +884,7 @@ const AnalyticsPage = () => {
           </div>
 
           {/* Enhanced Professional Filter Controls */}
-          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-white via-blue-50/30 to-purple-50/30 dark:from-slate-900 dark:via-slate-800 dark:to-blue-900/50 p-6 border border-blue-200/30 dark:border-slate-700/50 shadow-lg backdrop-blur-sm">
+          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-200 via-purple-200 to-pink-200 dark:from-slate-900 dark:via-slate-800 dark:to-blue-900/50 p-6 border border-blue-400 dark:border-slate-700/50 shadow-lg backdrop-blur-sm">
             {/* Background Pattern */}
             <div className="absolute inset-0 bg-gradient-to-r from-blue-500/3 via-purple-500/3 to-pink-500/3 dark:from-blue-400/10 dark:via-purple-400/10 dark:to-pink-400/10"></div>
             <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-400/5 to-purple-400/5 dark:from-blue-400/20 dark:to-purple-400/20 rounded-full blur-3xl"></div>
@@ -849,7 +894,7 @@ const AnalyticsPage = () => {
               {/* Header */}
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center space-x-3">
-                  <div className="p-2 bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-500/20 dark:to-purple-500/20 rounded-xl border border-blue-200/50 dark:border-blue-400/30">
+                  <div className="p-2 bg-gradient-to-br from-blue-200 to-purple-200 dark:from-blue-500/20 dark:to-purple-500/20 rounded-xl border border-blue-300 dark:border-blue-400/30">
                     <Filter className="h-5 w-5 text-blue-600 dark:text-blue-400" />
                   </div>
                   <div>
@@ -950,7 +995,7 @@ const AnalyticsPage = () => {
                               <span className="font-medium">{category.label}</span>
                               <span className="text-xs text-slate-700 dark:text-slate-400">
                                 {category.value === 'all' ? 'All command types' :
-                                 `${mockData.commands.filter(cmd => cmd.category === category.value).length} commands`}
+                                 `${commands.filter(cmd => cmd.category === category.value).length} commands`}
                               </span>
                             </div>
                           </div>
@@ -965,7 +1010,7 @@ const AnalyticsPage = () => {
                     ></div>
                     <span>
                       {selectedCategory === 'all'
-                        ? `${mockData.commands.length} total commands`
+                        ? `${commands.length} total commands`
                         : `${filteredData.length} filtered commands`}
                     </span>
                   </div>
@@ -1297,7 +1342,16 @@ const AnalyticsPage = () => {
       </Card>
 
       {/* Enhanced Key Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h3 className="text-lg font-semibold">Key Metrics</h3>
+          {isUsingRealData && (
+            <Badge className="bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400 border-green-200 dark:border-green-800">
+              ✅ Live Bot Data
+            </Badge>
+          )}
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {[
           {
             title: "Total Commands",
@@ -1345,12 +1399,21 @@ const AnalyticsPage = () => {
             <Card
               key={metric.title}
               className={`relative overflow-hidden piwpiw-card-hover bg-gradient-to-br ${colorSchemes[metric.color].gradient} border-l-4 ${colorSchemes[metric.color].border} transition-all duration-500 hover:scale-105 animate-fade-in-up cursor-pointer group`}
-              style={{ animationDelay: `${index * 100}ms` }}
+              style={{ 
+                animationDelay: `${index * 100}ms`,
+                backgroundColor: metric.color === 'blue' ? '#60a5fa' : 
+                                metric.color === 'green' ? '#4ade80' :
+                                metric.color === 'yellow' ? '#fb923c' : '#a855f7',
+                backgroundImage: metric.color === 'blue' ? 'linear-gradient(135deg, #93c5fd, #60a5fa, #3b82f6)' :
+                                metric.color === 'green' ? 'linear-gradient(135deg, #86efac, #4ade80, #22c55e)' :
+                                metric.color === 'yellow' ? 'linear-gradient(135deg, #fed7aa, #fb923c, #f97316)' :
+                                'linear-gradient(135deg, #c4b5fd, #a855f7, #9333ea)'
+              }}
               onClick={() => toggleChartExpansion(`metric-${index}`)}
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-white/5 to-transparent"></div>
+
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 relative z-10">
-                <CardTitle className="text-sm font-medium text-slate-900 dark:text-slate-300">
+                <CardTitle className="text-sm font-medium text-slate-800 dark:text-slate-300">
                   {metric.title}
                 </CardTitle>
                 <div className="flex items-center space-x-2">
@@ -1369,7 +1432,7 @@ const AnalyticsPage = () => {
               <CardContent className="relative z-10">
                 <div className="space-y-1">
                   <div className="flex items-baseline space-x-2">
-                    <div className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+                    <div className="text-2xl font-bold text-slate-800 dark:text-slate-100">
                       {typeof metric.value === 'number' && metric.value > 999
                         ? `${(metric.value / 1000).toFixed(1)}k`
                         : metric.value}
@@ -1426,6 +1489,7 @@ const AnalyticsPage = () => {
             </Card>
           );
         })}
+        </div>
       </div>
 
       {/* Professional Tabbed Analytics Interface */}
@@ -1463,16 +1527,16 @@ const AnalyticsPage = () => {
           <div className="space-y-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Enhanced Daily Users Trend */}
-          <Card className={`piwpiw-card-hover bg-gradient-to-br from-white via-blue-50/30 to-purple-50/30 dark:from-slate-900 dark:via-blue-950/30 dark:to-purple-950/30 border border-slate-200 dark:border-slate-700 animate-fade-in-up`} style={{ animationDelay: '200ms' }}>
+          <Card className={`piwpiw-card-hover bg-gradient-to-br from-blue-200 via-blue-300 to-purple-300 dark:from-slate-900 dark:via-blue-950/30 dark:to-purple-950/30 border border-blue-400 dark:border-slate-700 animate-fade-in-up`} style={{ animationDelay: '200ms' }}>
             <CardHeader className="space-y-1">
               <div className="flex items-center justify-between">
                 <CardTitle className="flex items-center space-x-2">
-                  <div className="p-2 bg-blue-100 dark:bg-blue-500/20 rounded-lg border border-blue-200 dark:border-blue-400/30">
-                    <Activity className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                  <div className="p-2 bg-blue-400 dark:bg-blue-500/20 rounded-lg border border-blue-500 dark:border-blue-400/30">
+                    <Activity className="h-5 w-5 text-white dark:text-blue-400" />
                   </div>
                   <span className="text-slate-800 dark:text-slate-100">Daily Active Users</span>
                 </CardTitle>
-                <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-300 dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-600/50">
+                <Badge variant="outline" className="bg-blue-200 text-blue-800 border-blue-400 dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-600/50">
                   +12.5% ↗
                 </Badge>
               </div>
@@ -1705,7 +1769,7 @@ const AnalyticsPage = () => {
           <CardContent>
             <ResponsiveContainer width="100%" height={300}>
               <BarChart 
-                data={mockData.commands.sort((a, b) => b.usageCount - a.usageCount).slice(0, 10)}
+                data={commands.sort((a, b) => b.usageCount - a.usageCount).slice(0, 10)}
                 layout="vertical"
                 margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
               >
@@ -1915,11 +1979,11 @@ const AnalyticsPage = () => {
       {/* New Enhanced Performance Insights Section */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Peak Usage Hours */}
-        <Card className={`piwpiw-card-hover bg-gradient-to-br from-white via-indigo-50/30 to-blue-50/30 dark:from-slate-900 dark:via-indigo-950/30 dark:to-blue-950/30 border border-slate-200 dark:border-slate-700 animate-fade-in-up`} style={{ animationDelay: '800ms' }}>
+        <Card className={`piwpiw-card-hover bg-gradient-to-br from-indigo-200 via-indigo-300 to-blue-300 dark:from-slate-900 dark:via-indigo-950/30 dark:to-blue-950/30 border border-indigo-400 dark:border-slate-700 animate-fade-in-up`} style={{ animationDelay: '800ms' }}>
           <CardHeader className="space-y-1">
             <CardTitle className="flex items-center space-x-2">
-              <div className="p-2 bg-indigo-100 dark:bg-indigo-500/20 rounded-lg border border-indigo-200 dark:border-indigo-400/30">
-                <Calendar className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
+              <div className="p-2 bg-indigo-400 dark:bg-indigo-500/20 rounded-lg border border-indigo-500 dark:border-indigo-400/30">
+                <Calendar className="h-5 w-5 text-white dark:text-indigo-400" />
               </div>
               <span className="text-slate-800 dark:text-slate-100">Peak Usage Hours</span>
             </CardTitle>
@@ -2101,7 +2165,7 @@ const AnalyticsPage = () => {
               </CardHeader>
               <CardContent>
                 <ResponsiveContainer width="100%" height={300}>
-                  <ScatterChart data={mockData.commands.slice(0, 20).map(cmd => ({
+                  <ScatterChart data={commands.slice(0, 20).map(cmd => ({
                     usage: cmd.usageCount,
                     performance: Math.random() * 100 + 50,
                     name: cmd.name

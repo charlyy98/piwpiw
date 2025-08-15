@@ -12,9 +12,13 @@ const CommandsPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
 
+  // Using mock data for everything
+  const commands = mockData.commands;
+  
   const categories = ['all', 'Games', 'Economy', 'Utility', 'Add Questions', 'MiniGames', 'Detective', 'Owner/Admin'];
   
-  const filteredCommands = mockData.commands.filter(command => {
+  // Filter commands
+  const filteredCommands = commands.filter(command => {
     // Remove 'P' prefix from search term if it exists for better matching
     const cleanSearchTerm = searchTerm.toLowerCase().startsWith('p') ? searchTerm.slice(1) : searchTerm;
     const matchesSearch = command.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -160,7 +164,7 @@ const CommandsPage = () => {
                  category === 'Detective' ? '🕵️ Detective' : '👑 Owner/Admin'}
                 {category !== 'all' && (
                   <Badge variant="secondary" className="ml-2 text-xs">
-                    {mockData.commands.filter(c => c.category === category).length}
+                    {commands.filter(c => c.category === category).length}
                   </Badge>
                 )}
               </Button>
@@ -411,7 +415,7 @@ const CommandsPage = () => {
                   <div 
                     className="bg-gradient-to-r from-primary to-primary/70 h-2 rounded-full transition-all duration-500"
                     style={{ 
-                      width: `${Math.min((command.usageCount / Math.max(...mockData.commands.map(c => c.usageCount))) * 100, 100)}%` 
+                      width: `${Math.min((command.usageCount / Math.max(...commands.map(c => c.usageCount))) * 100, 100)}%` 
                     }}
                   ></div>
                 </div>
@@ -433,128 +437,133 @@ const CommandsPage = () => {
       )}
 
       {/* Enhanced Command statistics */}
-      <Card className="piwpiw-card-hover">
-        <CardHeader>
-          <CardTitle className="flex items-center space-x-2">
-            <span>📊</span>
-            <span>Command Statistics</span>
-          </CardTitle>
-          <CardDescription>
-            Overview of command usage and categories across all servers
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-8 gap-4">
-            <div className="text-center p-4 border rounded-xl bg-gradient-to-br from-primary/5 to-primary/10 hover:shadow-lg transition-all duration-300">
-              <div className="text-3xl mb-2">⚡</div>
-              <p className="text-2xl font-bold text-primary">{mockData.commands.length}</p>
-              <p className="text-sm text-muted-foreground">Total Commands</p>
-            </div>
-            <div className="text-center p-4 border rounded-xl bg-gradient-to-br from-pink-500/5 to-purple-500/10 hover:shadow-lg transition-all duration-300">
-              <div className="text-3xl mb-2">🎮</div>
-              <p className="text-2xl font-bold text-pink-600">
-                {mockData.commands.filter(c => c.category === 'Games').length}
-              </p>
-              <p className="text-sm text-muted-foreground">Game Commands</p>
-            </div>
-            <div className="text-center p-4 border rounded-xl bg-gradient-to-br from-blue-500/5 to-cyan-500/10 hover:shadow-lg transition-all duration-300">
-              <div className="text-3xl mb-2">🛠️</div>
-              <p className="text-2xl font-bold text-blue-600">
-                {mockData.commands.filter(c => c.category === 'Utility').length}
-              </p>
-              <p className="text-sm text-muted-foreground">Utility Commands</p>
-            </div>
-            <div className="text-center p-4 border rounded-xl bg-gradient-to-br from-green-500/5 to-emerald-500/10 hover:shadow-lg transition-all duration-300">
-              <div className="text-3xl mb-2">💰</div>
-              <p className="text-2xl font-bold text-green-600">
-                {mockData.commands.filter(c => c.category === 'Economy').length}
-              </p>
-              <p className="text-sm text-muted-foreground">Economy Commands</p>
-            </div>
-            <div className="text-center p-4 border rounded-xl bg-gradient-to-br from-orange-500/5 to-amber-500/10 hover:shadow-lg transition-all duration-300">
-              <div className="text-3xl mb-2">📝</div>
-              <p className="text-2xl font-bold text-orange-600">
-                {mockData.commands.filter(c => c.category === 'Add Questions').length}
-              </p>
-              <p className="text-sm text-muted-foreground">Add Questions</p>
-            </div>
-            <div className="text-center p-4 border rounded-xl bg-gradient-to-br from-indigo-500/5 to-purple-600/10 hover:shadow-lg transition-all duration-300">
-              <div className="text-3xl mb-2">🎯</div>
-              <p className="text-2xl font-bold text-indigo-600">
-                {mockData.commands.filter(c => c.category === 'MiniGames').length}
-              </p>
-              <p className="text-sm text-muted-foreground">MiniGames</p>
-            </div>
-            <div className="text-center p-4 border rounded-xl bg-gradient-to-br from-gray-800/5 to-slate-600/10 hover:shadow-lg transition-all duration-300">
-              <div className="text-3xl mb-2">🕵️</div>
-              <p className="text-2xl font-bold text-gray-800">
-                {mockData.commands.filter(c => c.category === 'Detective').length}
-              </p>
-              <p className="text-sm text-muted-foreground">Detective</p>
-            </div>
-            <div className="text-center p-4 border rounded-xl bg-gradient-to-br from-red-600/5 to-rose-700/10 hover:shadow-lg transition-all duration-300">
-              <div className="text-3xl mb-2">👑</div>
-              <p className="text-2xl font-bold text-red-700">
-                {mockData.commands.filter(c => c.category === 'Owner/Admin').length}
-              </p>
-              <p className="text-sm text-muted-foreground">Owner/Admin</p>
-            </div>
-          </div>
-          
-          {/* Usage Statistics */}
-          <div className="mt-6 pt-6 border-t">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="text-center p-4 border rounded-xl bg-gradient-to-br from-yellow-500/5 to-orange-500/10">
-                <div className="text-3xl mb-2">🚀</div>
+      {commands && (
+        <Card className="piwpiw-card-hover">
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2">
+              <span>📊</span>
+              <span>Command Statistics</span>
+            </CardTitle>
+            <CardDescription>
+              Overview of command usage and categories across all servers
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-8 gap-4">
+              <div className="text-center p-4 border rounded-xl bg-gradient-to-br from-primary/5 to-primary/10 hover:shadow-lg transition-all duration-300">
+                <div className="text-3xl mb-2">⚡</div>
+                                  <p className="text-2xl font-bold text-primary">{commands.length}</p>
+                <p className="text-sm text-muted-foreground">Total Commands</p>
+              </div>
+              <div className="text-center p-4 border rounded-xl bg-gradient-to-br from-pink-500/5 to-purple-500/10 hover:shadow-lg transition-all duration-300">
+                <div className="text-3xl mb-2">🎮</div>
+                <p className="text-2xl font-bold text-pink-600">
+                  {commands.filter(c => c.category === 'Games').length}
+                </p>
+                <p className="text-sm text-muted-foreground">Game Commands</p>
+              </div>
+              <div className="text-center p-4 border rounded-xl bg-gradient-to-br from-blue-500/5 to-cyan-500/10 hover:shadow-lg transition-all duration-300">
+                <div className="text-3xl mb-2">🛠️</div>
+                <p className="text-2xl font-bold text-blue-600">
+                  {commands.filter(c => c.category === 'Utility').length}
+                </p>
+                <p className="text-sm text-muted-foreground">Utility Commands</p>
+              </div>
+              <div className="text-center p-4 border rounded-xl bg-gradient-to-br from-green-500/5 to-emerald-500/10 hover:shadow-lg transition-all duration-300">
+                <div className="text-3xl mb-2">💰</div>
+                <p className="text-2xl font-bold text-green-600">
+                  {commands.filter(c => c.category === 'Economy').length}
+                </p>
+                <p className="text-sm text-muted-foreground">Economy Commands</p>
+              </div>
+              <div className="text-center p-4 border rounded-xl bg-gradient-to-br from-orange-500/5 to-amber-500/10 hover:shadow-lg transition-all duration-300">
+                <div className="text-3xl mb-2">📝</div>
                 <p className="text-2xl font-bold text-orange-600">
-                  {mockData.commands.reduce((sum, c) => sum + c.usageCount, 0).toLocaleString()}
+                  {commands.filter(c => c.category === 'Add Questions').length}
                 </p>
-                <p className="text-sm text-muted-foreground">Total Command Usage</p>
+                <p className="text-sm text-muted-foreground">Add Questions</p>
               </div>
-              <div className="text-center p-4 border rounded-xl bg-gradient-to-br from-indigo-500/5 to-purple-500/10">
-                <div className="text-3xl mb-2">📈</div>
+              <div className="text-center p-4 border rounded-xl bg-gradient-to-br from-indigo-500/5 to-purple-600/10 hover:shadow-lg transition-all duration-300">
+                <div className="text-3xl mb-2">🎯</div>
                 <p className="text-2xl font-bold text-indigo-600">
-                  {Math.round(mockData.commands.reduce((sum, c) => sum + c.usageCount, 0) / mockData.commands.length).toLocaleString()}
+                  {commands.filter(c => c.category === 'MiniGames').length}
                 </p>
-                <p className="text-sm text-muted-foreground">Average Usage per Command</p>
+                <p className="text-sm text-muted-foreground">MiniGames</p>
+              </div>
+              <div className="text-center p-4 border rounded-xl bg-gradient-to-br from-gray-800/5 to-slate-600/10 hover:shadow-lg transition-all duration-300">
+                <div className="text-3xl mb-2">🕵️</div>
+                <p className="text-2xl font-bold text-gray-800">
+                  {commands.filter(c => c.category === 'Detective').length}
+                </p>
+                <p className="text-sm text-muted-foreground">Detective</p>
+              </div>
+              <div className="text-center p-4 border rounded-xl bg-gradient-to-br from-red-600/5 to-rose-700/10 hover:shadow-lg transition-all duration-300">
+                <div className="text-3xl mb-2">👑</div>
+                <p className="text-2xl font-bold text-red-700">
+                  {commands.filter(c => c.category === 'Owner/Admin').length}
+                </p>
+                <p className="text-sm text-muted-foreground">Owner/Admin</p>
               </div>
             </div>
-          </div>
+            
+            {/* Usage Statistics */}
+            <div className="mt-6 pt-6 border-t">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="text-center p-4 border rounded-xl bg-gradient-to-br from-yellow-500/5 to-orange-500/10">
+                  <div className="text-3xl mb-2">🚀</div>
+                  <p className="text-2xl font-bold text-orange-600">
+                    {commands.reduce((sum, c) => sum + c.usageCount, 0).toLocaleString()}
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    Total Command Usage
+                  </p>
+                </div>
+                <div className="text-center p-4 border rounded-xl bg-gradient-to-br from-indigo-500/5 to-purple-500/10">
+                  <div className="text-3xl mb-2">📈</div>
+                  <p className="text-2xl font-bold text-indigo-600">
+                    {Math.round(commands.reduce((sum, c) => sum + c.usageCount, 0) / commands.length).toLocaleString()}
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    Average Usage per Command
+                  </p>
+                </div>
+              </div>
+            </div>
 
-          {/* Top Commands Preview */}
-          <div className="mt-6 pt-6 border-t">
-            <h4 className="text-lg font-semibold mb-4 flex items-center space-x-2">
-              <span>🏆</span>
-              <span>Most Popular Commands</span>
-            </h4>
-            <div className="space-y-2">
-              {mockData.commands
-                .sort((a, b) => b.usageCount - a.usageCount)
-                .slice(0, 5)
-                .map((command, index) => (
-                  <div key={command.name} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-6 h-6 bg-gradient-to-r from-primary to-primary/70 rounded-full flex items-center justify-center text-white text-xs font-bold">
-                        {index + 1}
+            {/* Top Commands Preview */}
+            <div className="mt-6 pt-6 border-t">
+              <h4 className="text-lg font-semibold mb-4 flex items-center space-x-2">
+                <span>🏆</span>
+                <span>Most Popular Commands</span>
+              </h4>
+              <div className="space-y-2">
+                {commands
+                  .sort((a, b) => b.usageCount - a.usageCount)
+                  .slice(0, 5)
+                  .map((command, index) => (
+                    <div key={command.name} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
+                      <div className="flex items-center space-x-3">
+                        <div className="w-6 h-6 bg-gradient-to-r from-primary to-primary/70 rounded-full flex items-center justify-center text-white text-xs font-bold">
+                          {index + 1}
+                        </div>
+                        <span className="text-xl">{getCommandIcon(command.name)}</span>
+                        <span className="font-mono font-medium">P{command.name}</span>
+                        <Badge className={getCategoryColor(command.category)} variant="outline">
+                          {command.category}
+                        </Badge>
                       </div>
-                      <span className="text-xl">{getCommandIcon(command.name)}</span>
-                      <span className="font-mono font-medium">P{command.name}</span>
-                      <Badge className={getCategoryColor(command.category)} variant="outline">
-                        {command.category}
+                      <Badge variant="secondary" className="font-mono">
+                        {command.usageCount.toLocaleString()}
                       </Badge>
                     </div>
-                    <Badge variant="secondary" className="font-mono">
-                      {command.usageCount.toLocaleString()}
-                    </Badge>
-                  </div>
-                ))}
+                  ))}
+              </div>
             </div>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 };
 
 export default CommandsPage;
-

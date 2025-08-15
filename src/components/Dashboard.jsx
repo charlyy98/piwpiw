@@ -77,6 +77,14 @@ const Dashboard = () => {
   const { data: notifications, loading: notificationsLoading, refetch: refetchNotifications } = useNotifications();
   const { data: systemStatus, loading: systemStatusLoading } = useSystemStatus();
   
+  // Debug logging for Dashboard
+  console.log('📊 Dashboard Debug:', {
+    stats: !!stats,
+    serversData: !!serversData,
+    statsValue: stats,
+    serversCount: serversData?.length || 0
+  });
+  
   // Mutation hook for API calls
   const { mutate, loading: mutationLoading } = useApiMutation();
 
@@ -108,6 +116,7 @@ const Dashboard = () => {
 
   // Manual refresh function
   const handleRefreshAll = () => {
+    console.log('🔄 Manual refresh triggered for all dashboard data');
     refetchStats();
     refetchPerformance();
     refetchUserGrowth();

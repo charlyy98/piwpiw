@@ -24,6 +24,7 @@ import {
   Wifi,
   WifiOff
 } from 'lucide-react';
+import { useServers } from '../hooks/useApi';
 import mockData from '../data/mockData.json';
 
 const ServersPage = () => {
@@ -31,20 +32,47 @@ const ServersPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [animationKey, setAnimationKey] = useState(0);
 
-  // Enhanced server data with additional metrics
-  const enhancedServers = mockData.servers.map(server => ({
-    ...server,
-    uptime: Math.floor(Math.random() * 5) + 95, // 95-100% uptime
-    responseTime: Math.floor(Math.random() * 50) + 20, // 20-70ms response time
-    commandsToday: Math.floor(Math.random() * 500) + 50,
-    lastActivity: new Date(Date.now() - Math.random() * 86400000).toISOString(), // Last 24 hours
-    premium: Math.random() > 0.7, // 30% chance of premium
-    region: ['US East', 'EU West', 'Asia Pacific', 'US West'][Math.floor(Math.random() * 4)]
-  }));
-
+  // 🚀 NOW USING REAL SERVER DATA!
+  const { data: realServers, loading, error, refetch } = useServers();
+  
+  // All hooks must be called before any conditional returns
   useEffect(() => {
     setAnimationKey(prev => prev + 1);
   }, []);
+  
+  // Debug logging
+  console.log('🔍 ServersPage Debug:', {
+    realServers,
+    loading,
+    error,
+    hasRealData: !!realServers,
+    serverCount: realServers?.length || 0
+  });
+  
+  // FORCE REAL DATA - NO FALLBACK TO MOCK!
+  const servers = realServers && realServers.length > 0 ? realServers : [];
+  
+  console.log('📊 Final servers being used:', servers.map(s => ({ name: s.name, id: s.id })));
+
+  // Use ONLY real Discord data - NO fake/estimated data
+  const enhancedServers = servers.map(server => ({
+    ...server,
+    // Use real Discord server icon
+    serverIcon: server.icon || null,
+    // Use real stats from Discord API
+    uptime: server.stats?.uptime || "N/A",
+    commandsToday: server.stats?.commandsToday || 0,
+    activeUsers: server.stats?.activeUsers || 0,
+    messagesHour: server.stats?.messagesHour || 0,
+    // Real Discord server data
+    premium: server.boostLevel > 0,
+    region: server.region || "Unknown",
+    lastActivity: server.joinedAt,
+    // No fake data - use real or show N/A
+    responseTime: "N/A", // Not available from Discord API
+    channelCount: "N/A", // Would need separate API call
+    roleCount: "N/A" // Would need separate API call
+  }));
 
   const handleAddBot = (serverId) => {
     console.log('Adding bot to server:', serverId);
@@ -56,6 +84,33 @@ const ServersPage = () => {
     console.log('Managing bot in server:', serverId);
   };
 
+  // Professional button handlers
+  const handleConfigure = (server) => {
+    console.log('🔧 Opening configuration for server:', server.name);
+    // Open configuration modal or navigate to settings
+    window.dispatchEvent(new CustomEvent('showServerConfig', { 
+      detail: { 
+        serverId: server.id, 
+        serverName: server.name,
+        memberCount: server.memberCount 
+      } 
+    }));
+  };
+
+  const handleAnalytics = (server) => {
+    console.log('📊 Opening analytics for server:', server.name);
+    // Navigate to analytics page with server filter
+    window.location.hash = 'analytics';
+    setTimeout(() => {
+      window.dispatchEvent(new CustomEvent('filterAnalytics', { 
+        detail: { 
+          serverId: server.id, 
+          serverName: server.name 
+        } 
+      }));
+    }, 100);
+  };
+
   // Filter servers
   const filteredServers = enhancedServers.filter(server => 
     server.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -63,27 +118,58 @@ const ServersPage = () => {
 
   const getStatusColor = (server) => {
     if (!server.botAdded) return 'text-gray-500';
-    if (server.uptime >= 99) return 'text-green-500';
-    if (server.uptime >= 95) return 'text-yellow-500';
-    return 'text-red-500';
+    return 'text-green-500';
   };
 
   const getStatusIcon = (server) => {
     if (!server.botAdded) return <WifiOff className="h-4 w-4" />;
-    if (server.uptime >= 99) return <CheckCircle className="h-4 w-4" />;
-    if (server.uptime >= 95) return <AlertCircle className="h-4 w-4" />;
-    return <AlertCircle className="h-4 w-4" />;
+    return <CheckCircle className="h-4 w-4" />;
   };
 
   const totalStats = {
     totalServers: enhancedServers.length,
     activeServers: enhancedServers.filter(s => s.botAdded).length,
     totalMembers: enhancedServers.reduce((sum, s) => sum + s.memberCount, 0),
-    totalChannels: enhancedServers.reduce((sum, s) => sum + s.channelCount, 0),
-    totalCommands: enhancedServers.reduce((sum, s) => sum + s.commandsToday, 0),
-    averageUptime: enhancedServers.reduce((sum, s) => sum + s.uptime, 0) / enhancedServers.length,
+    totalChannels: "N/A", // Not available from Discord API
+    totalCommands: enhancedServers.reduce((sum, s) => sum + (s.commandsToday || 0), 0),
+    averageUptime: "N/A", // Not reliable from Discord API
     premiumServers: enhancedServers.filter(s => s.premium).length
   };
+
+  // Show loading state
+  if (!realServers && loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600 mx-auto mb-4"></div>
+          <p>Loading real Discord server data...</p>
+          <p className="text-sm text-muted-foreground mt-2">Fetching from your Discord bot...</p>
+        </div>
+      </div>
+    );
+  }
+  
+  // Show error state
+  if (!realServers && error) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-center">
+          <p className="text-red-500 mb-2">❌ CORS Error or Backend Not Available</p>
+          <p className="text-sm text-muted-foreground mb-4">
+            Cannot fetch real Discord servers. Check console for details.
+          </p>
+          <Button onClick={refetch} className="mt-4 mr-2">🔄 Retry</Button>
+          <Button 
+            variant="outline" 
+            onClick={() => window.open('http://localhost:3001/api/servers', '_blank')}
+            className="mt-4"
+          >
+            🔗 Test API Direct
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -99,7 +185,26 @@ const ServersPage = () => {
           </p>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" className="piwpiw-button-outline">
+          <Button 
+            variant="outline" 
+            className="piwpiw-button-outline"
+            onClick={() => {
+              console.log('🔄 Manual refresh triggered');
+              refetch();
+            }}
+            disabled={loading}
+          >
+            <Activity className="mr-2 h-4 w-4" />
+            {loading ? 'Refreshing...' : 'Refresh Data'}
+          </Button>
+          <Button 
+            variant="outline" 
+            className="piwpiw-button-outline"
+            onClick={() => {
+              console.log('📊 Navigate to Analytics page');
+              window.location.hash = 'analytics';
+            }}
+          >
             <BarChart3 className="mr-2 h-4 w-4" />
             Analytics
           </Button>
@@ -156,7 +261,7 @@ const ServersPage = () => {
                 <p className="text-sm font-medium text-muted-foreground">Commands Today</p>
                 <p className="text-3xl font-bold text-purple-600">{totalStats.totalCommands.toLocaleString()}</p>
                 <p className="text-xs text-muted-foreground mt-1">
-                  +12% from yesterday
+                  Real bot commands
                 </p>
               </div>
               <div className="p-3 bg-purple-500/10 rounded-full">
@@ -170,10 +275,10 @@ const ServersPage = () => {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-muted-foreground">Average Uptime</p>
-                <p className="text-3xl font-bold text-orange-600">{totalStats.averageUptime.toFixed(1)}%</p>
+                <p className="text-sm font-medium text-muted-foreground">Premium Servers</p>
+                <p className="text-3xl font-bold text-orange-600">{totalStats.premiumServers}</p>
                 <p className="text-xs text-muted-foreground mt-1">
-                  {totalStats.premiumServers} premium servers
+                  Boosted servers only
                 </p>
               </div>
               <div className="p-3 bg-orange-500/10 rounded-full">
@@ -207,8 +312,24 @@ const ServersPage = () => {
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
                   <div className="relative">
-                    <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
-                      <Server className="h-6 w-6 text-primary" />
+                    {server.serverIcon ? (
+                      <img 
+                        src={server.serverIcon} 
+                        alt={`${server.name} icon`}
+                        className="w-12 h-12 rounded-full object-cover border-2 border-white dark:border-gray-800 shadow-lg"
+                        onError={(e) => {
+                          e.target.style.display = 'none';
+                          e.target.nextSibling.style.display = 'flex';
+                        }}
+                      />
+                    ) : null}
+                    <div 
+                      className={`w-12 h-12 bg-gradient-to-br from-primary/20 to-primary/10 rounded-full flex items-center justify-center border-2 border-white dark:border-gray-800 shadow-lg ${server.serverIcon ? 'hidden' : 'flex'}`}
+                      style={{display: server.serverIcon ? 'none' : 'flex'}}
+                    >
+                      <span className="text-lg font-bold text-primary">
+                        {server.name.charAt(0).toUpperCase()}
+                      </span>
                     </div>
                     {server.premium && (
                       <div className="absolute -top-1 -right-1 w-5 h-5 bg-yellow-500 rounded-full flex items-center justify-center">
@@ -236,7 +357,7 @@ const ServersPage = () => {
                   </Badge>
                   {server.botAdded && (
                     <span className="text-xs text-muted-foreground">
-                      {server.uptime.toFixed(1)}% uptime
+                      {server.uptime} uptime
                     </span>
                   )}
                 </div>
@@ -254,36 +375,35 @@ const ServersPage = () => {
                 </div>
                 <div className="space-y-1">
                   <div className="flex items-center justify-center">
-                    <Hash className="h-4 w-4 text-muted-foreground" />
+                    <Zap className="h-4 w-4 text-muted-foreground" />
                   </div>
-                  <p className="text-sm font-medium">{server.channelCount}</p>
-                  <p className="text-xs text-muted-foreground">{t('servers.channels')}</p>
+                  <p className="text-sm font-medium">{server.commandsToday}</p>
+                  <p className="text-xs text-muted-foreground">Commands</p>
                 </div>
                 <div className="space-y-1">
                   <div className="flex items-center justify-center">
                     <Shield className="h-4 w-4 text-muted-foreground" />
                   </div>
-                  <p className="text-sm font-medium">{server.roleCount}</p>
-                  <p className="text-xs text-muted-foreground">{t('servers.roles')}</p>
+                  <p className="text-sm font-medium">{server.boostLevel}</p>
+                  <p className="text-xs text-muted-foreground">Boost Level</p>
                 </div>
               </div>
 
-              {/* Performance Metrics */}
+              {/* Real Discord Stats */}
               {server.botAdded && (
                 <div className="space-y-3 p-3 bg-muted/30 rounded-lg">
                   <div className="flex justify-between items-center text-sm">
-                    <span className="text-muted-foreground">Performance</span>
-                    <span className="font-medium">{server.uptime.toFixed(1)}%</span>
+                    <span className="text-muted-foreground">Bot Status</span>
+                    <span className="font-medium">{server.uptime}</span>
                   </div>
-                  <Progress value={server.uptime} className="h-2" />
                   <div className="grid grid-cols-2 gap-4 text-xs">
                     <div className="flex items-center gap-1">
-                      <Clock className="h-3 w-3 text-muted-foreground" />
-                      <span>{server.responseTime}ms</span>
+                      <Users className="h-3 w-3 text-muted-foreground" />
+                      <span>{server.activeUsers} active</span>
                     </div>
                     <div className="flex items-center gap-1">
                       <Zap className="h-3 w-3 text-muted-foreground" />
-                      <span>{server.commandsToday} today</span>
+                      <span>{server.commandsToday} cmds</span>
                     </div>
                   </div>
                 </div>
@@ -306,27 +426,36 @@ const ServersPage = () => {
                 </div>
               </div>
 
-              {/* Enhanced Actions */}
-              <div className="flex gap-2">
-                {server.botAdded ? (
-                  <Button 
-                    variant="outline" 
-                    className="flex-1"
-                    onClick={() => handleManageBot(server.id)}
-                  >
-                    <Settings className="mr-2 h-4 w-4" />
-                    {t('servers.manageBot')}
-                  </Button>
-                ) : (
-                  <Button 
-                    className="flex-1 piwpiw-button"
-                    onClick={() => handleAddBot(server.id)}
-                  >
-                    <Plus className="mr-2 h-4 w-4" />
-                    {t('servers.addBot')}
-                  </Button>
-                )}
+              {/* Professional Action Buttons */}
+              <div className="grid grid-cols-2 gap-2">
+                <Button 
+                  variant="outline" 
+                  className="flex items-center justify-center gap-2 hover:bg-blue-50 hover:border-blue-200 dark:hover:bg-blue-950/20"
+                  onClick={() => handleConfigure(server)}
+                >
+                  <Settings className="h-4 w-4" />
+                  Configure
+                </Button>
+                <Button 
+                  variant="outline" 
+                  className="flex items-center justify-center gap-2 hover:bg-purple-50 hover:border-purple-200 dark:hover:bg-purple-950/20"
+                  onClick={() => handleAnalytics(server)}
+                >
+                  <BarChart3 className="h-4 w-4" />
+                  Analytics
+                </Button>
               </div>
+
+              {/* Add Bot Button (if not added) */}
+              {!server.botAdded && (
+                <Button 
+                  className="w-full piwpiw-button mt-2"
+                  onClick={() => handleAddBot(server.id)}
+                >
+                  <Plus className="mr-2 h-4 w-4" />
+                  Add Bot to Server
+                </Button>
+              )}
 
               {/* Last Activity */}
               {server.botAdded && (

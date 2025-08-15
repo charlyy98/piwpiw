@@ -1,61 +1,29 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import translations from '../data/translations.json';
-import { mockApi } from '../api/mockApi.js';
+import { mockApi } from '../api/mockApi.js'; // Use the mock API for avatar upload
 
 const AppContext = createContext();
 
-export const useApp = () => {
+// Export hook for accessing app context
+export function useApp() {
   const context = useContext(AppContext);
   if (!context) {
     throw new Error('useApp must be used within an AppProvider');
   }
   return context;
-};
+}
 
 export const AppProvider = ({ children }) => {
   const [language, setLanguage] = useState('en');
   const [theme, setTheme] = useState('light');
-  const [isAuthenticated, setIsAuthenticated] = useState(() => {
-    // Initialize authentication state from localStorage
-    if (typeof window !== 'undefined') {
-      const savedAuth = localStorage.getItem('piwpiw-auth');
-      const savedUser = localStorage.getItem('piwpiw-user');
-      const isAuth = savedAuth === 'true' && savedUser;
-      console.log('Initializing auth state:', { savedAuth, savedUser, isAuth });
-      return isAuth;
-    }
-    return false;
-  });
-  const [user, setUser] = useState(() => {
-    // Initialize user state from localStorage
-    if (typeof window !== 'undefined') {
-      const savedUser = localStorage.getItem('piwpiw-user');
-      if (savedUser) {
-        try {
-          const userData = JSON.parse(savedUser);
-          console.log('Initializing user from localStorage:', userData);
-          return userData;
-        } catch (error) {
-          console.error('Failed to parse saved user data:', error);
-          return null;
-        }
-      }
-    }
-    return {
-      id: '123456789',
-      username: 'PiwPiw',
-      avatar: 'https://cdn.discordapp.com/avatars/123456789/avatar.png',
-      discriminator: '1234',
-      email: 'user@piwpiw.com'
-    };
-  });
+  const [isAuthenticated, setIsAuthenticated] = useState(false); // Default to false
+  const [user, setUser] = useState(null); // Default to null, will be populated on login
 
   // Load saved preferences from localStorage
   useEffect(() => {
     console.log('Loading saved preferences from localStorage');
     const savedLanguage = localStorage.getItem('piwpiw-language');
     const savedTheme = localStorage.getItem('piwpiw-theme');
-    const savedAuth = localStorage.getItem('piwpiw-auth');
     const savedUser = localStorage.getItem('piwpiw-user');
 
     if (savedLanguage) {
@@ -66,17 +34,25 @@ export const AppProvider = ({ children }) => {
       setTheme(savedTheme);
       console.log('Loaded theme:', savedTheme);
     }
-    if (savedAuth === 'true' && savedUser) {
-      setIsAuthenticated(true);
-      console.log('Loaded auth state: true');
-    }
-    if (savedUser) {
+    // Atomically load user and auth state to prevent inconsistencies
+    if (localStorage.getItem('piwpiw-auth') === 'true' && savedUser) {
       try {
         const userData = JSON.parse(savedUser);
-        setUser(userData);
-        console.log('Loaded user data:', userData);
+        // Ensure userData is a valid object before setting auth state
+        if (userData && userData.id) {
+          setUser(userData);
+          setIsAuthenticated(true);
+          console.log('✅ Successfully loaded user and authenticated:', userData);
+        } else {
+          throw new Error('Parsed user data is invalid or missing ID.');
+        }
       } catch (error) {
-        console.error('Failed to parse saved user data:', error);
+        console.error('❌ Corrupted user data in localStorage. Clearing auth state.', error);
+        // Clear corrupted data and ensure user is logged out
+        localStorage.removeItem('piwpiw-auth');
+        localStorage.removeItem('piwpiw-user');
+        setIsAuthenticated(false);
+        setUser(null);
       }
     }
   }, []);
@@ -125,27 +101,6 @@ export const AppProvider = ({ children }) => {
     console.log('User logged out');
   };
 
-  // Restore saved auth state only (no auto-login)
-  useEffect(() => {
-    if (!isAuthenticated && typeof window !== 'undefined') {
-      const savedAuth = localStorage.getItem('piwpiw-auth');
-      const savedUser = localStorage.getItem('piwpiw-user');
-      
-      console.log('Checking auth state:', { savedAuth, savedUser, isAuthenticated });
-      
-      if (savedAuth === 'true' && savedUser) {
-        // Only restore saved auth state, no auto-login
-        try {
-          const userData = JSON.parse(savedUser);
-          console.log('Restoring saved auth state:', userData);
-          setIsAuthenticated(true);
-          setUser(userData);
-        } catch (error) {
-          console.error('Failed to restore saved auth state:', error);
-        }
-      }
-    }
-  }, []); // Remove isAuthenticated dependency to prevent loop after logout
 
   // Debug effect to log auth state changes
   useEffect(() => {
@@ -164,6 +119,11 @@ export const AppProvider = ({ children }) => {
   };
 
   const updateAvatar = async (file) => {
+    // Add a guard clause to ensure user object is available
+    if (!user || !user.id) {
+      console.error('Avatar update failed: User is not available.');
+      return { success: false, error: 'User not authenticated or data is missing.' };
+    }
     try {
       const response = await mockApi.uploadAvatar(user.id, file);
       if (response.success) {
@@ -208,6 +168,3 @@ export const AppProvider = ({ children }) => {
     </AppContext.Provider>
   );
 };
-
-
-

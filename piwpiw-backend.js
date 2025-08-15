@@ -3,16 +3,18 @@
 
 import express from 'express';
 import cors from 'cors';
+import fetch from 'node-fetch';
 
 const app = express();
 const PORT = 3001;
 
-// Middleware
+// Middleware - Enhanced CORS Configuration
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: ['http://localhost:5173', 'http://127.0.0.1:5173'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  allowedHeaders: ['Content-Type', 'Authorization', 'Cache-Control', 'Pragma', 'Expires', 'X-Requested-With'],
+  optionsSuccessStatus: 200
 }));
 
 app.use(express.json());
@@ -201,8 +203,22 @@ app.get('/api/users/profile/:userId', (req, res) => {
   });
 });
 
-// 🏰 Servers API
-app.get('/api/servers', (req, res) => {
+// 🏰 Servers API - Now with REAL data option
+app.get('/api/servers', async (req, res) => {
+  try {
+    // Try to get real data from bot integration
+    const realDataResponse = await fetch('http://localhost:3002/api/servers/real');
+    
+    if (realDataResponse.ok) {
+      const realData = await realDataResponse.json();
+      console.log('✅ Using REAL server data from bot!');
+      return res.json(realData);
+    }
+  } catch (error) {
+    console.log('⚠️ Real bot data not available, using fallback data');
+  }
+  
+  // Fallback to mock data if real bot integration is not available
   res.json({
     success: true,
     servers: [
@@ -238,12 +254,27 @@ app.get('/api/servers', (req, res) => {
       }
     ],
     total: 2,
-    botEnabled: 2
+    botEnabled: 2,
+    dataSource: 'fallback'
   });
 });
 
-// 📊 Analytics API
-app.get('/api/analytics/dashboard', (req, res) => {
+// 📊 Analytics API - Now with REAL data option
+app.get('/api/analytics/dashboard', async (req, res) => {
+  try {
+    // Try to get real analytics from bot integration
+    const realDataResponse = await fetch('http://localhost:3002/api/analytics/real');
+    
+    if (realDataResponse.ok) {
+      const realData = await realDataResponse.json();
+      console.log('✅ Using REAL analytics data from bot!');
+      return res.json(realData);
+    }
+  } catch (error) {
+    console.log('⚠️ Real bot analytics not available, using fallback data');
+  }
+  
+  // Fallback analytics data
   res.json({
     success: true,
     analytics: {
@@ -282,12 +313,27 @@ app.get('/api/analytics/dashboard', (req, res) => {
         responseTime: (Math.random() * 0.5 + 0.1).toFixed(2) + 'ms'
       }
     },
+    dataSource: 'fallback',
     generatedAt: new Date().toISOString()
   });
 });
 
-// 🎮 Commands API
-app.get('/api/commands', (req, res) => {
+// 🎮 Commands API - Now with REAL data option
+app.get('/api/commands', async (req, res) => {
+  try {
+    // Try to get real commands from bot integration
+    const realDataResponse = await fetch('http://localhost:3002/api/commands/real');
+    
+    if (realDataResponse.ok) {
+      const realData = await realDataResponse.json();
+      console.log('✅ Using REAL commands data from bot!');
+      return res.json(realData);
+    }
+  } catch (error) {
+    console.log('⚠️ Real bot commands not available, using fallback data');
+  }
+  
+  // Fallback commands data
   res.json({
     success: true,
     commands: [
@@ -319,12 +365,27 @@ app.get('/api/commands', (req, res) => {
         successRate: 100
       }
     ],
-    total: 3
+    total: 3,
+    dataSource: 'fallback'
   });
 });
 
-// 🤖 Bot Status API
-app.get('/api/bot/status', (req, res) => {
+// 🤖 Bot Status API - Now with REAL data option
+app.get('/api/bot/status', async (req, res) => {
+  try {
+    // Try to get real bot status from bot integration
+    const realDataResponse = await fetch('http://localhost:3002/api/bot/real-status');
+    
+    if (realDataResponse.ok) {
+      const realData = await realDataResponse.json();
+      console.log('✅ Using REAL bot status data!');
+      return res.json(realData);
+    }
+  } catch (error) {
+    console.log('⚠️ Real bot status not available, using fallback data');
+  }
+  
+  // Fallback bot status data
   res.json({
     success: true,
     bot: {
@@ -336,7 +397,8 @@ app.get('/api/bot/status', (req, res) => {
       users: 1649,
       memoryUsage: Math.floor(Math.random() * 200) + 100,
       cpuUsage: Math.floor(Math.random() * 30) + 10
-    }
+    },
+    dataSource: 'fallback'
   });
 });
 

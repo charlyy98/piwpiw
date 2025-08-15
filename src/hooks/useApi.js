@@ -95,7 +95,7 @@ export const useCommandUsage = (options = {}) => {
 
 export const useServers = (options = {}) => {
   return useApi(mockApi.getServers, [], {
-    refreshInterval: 120000, // Refresh every 2 minutes
+    refreshInterval: 10000, // Refresh every 10 seconds for testing
     ...options
   });
 };
@@ -149,4 +149,3 @@ export const useApiMutation = () => {
 };
 
 export default useApi;
-
