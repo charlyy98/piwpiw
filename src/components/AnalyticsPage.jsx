@@ -74,6 +74,7 @@ import {
   X
 } from 'lucide-react';
 import { useUserGrowth, useCommandUsage, usePerformanceMetrics } from '../hooks/useApi';
+import { useBotStatus, useBotServers, useBotAnalytics, useBotCommands } from '../hooks/useDiscordBot';
 import mockData from '../data/mockData.json';
 
 const AnalyticsPage = () => {
@@ -81,16 +82,26 @@ const AnalyticsPage = () => {
   const [timeRange, setTimeRange] = useState('7d');
   const [isLoading, setIsLoading] = useState(true);
 
-  // 🚀 NOW USING REAL ANALYTICS DATA!
+  // 🚀 REAL DISCORD BOT DATA INTEGRATION!
   const { data: realUserGrowth, loading: userGrowthLoading } = useUserGrowth(timeRange);
   const { data: realCommands, loading: commandsLoading } = useCommandUsage();
   const { data: realPerformanceMetrics, loading: performanceLoading } = usePerformanceMetrics();
   
-  // Use real data - prioritize real data over mock
-  const commands = realCommands || mockData.commands;
-  const isUsingRealData = !!(realUserGrowth || realCommands || realPerformanceMetrics);
+  // NEW: Real Discord Bot Data
+  const { data: botStatus, loading: botStatusLoading } = useBotStatus();
+  const { data: botServers, loading: botServersLoading } = useBotServers();
+  const { data: botAnalytics, loading: botAnalyticsLoading } = useBotAnalytics();
+  const { data: botCommands, loading: botCommandsLoading } = useBotCommands();
+  
+  // Use real Discord bot data - prioritize real bot data over mock
+  const commands = botCommands?.commands || realCommands || mockData.commands;
+  const isUsingRealData = !!(botStatus || botServers || botAnalytics || botCommands || realUserGrowth || realCommands || realPerformanceMetrics);
   
   console.log('📊 Analytics Page - Real Data Status:', {
+    botStatus: !!botStatus,
+    botServers: !!botServers,
+    botAnalytics: !!botAnalytics,
+    botCommands: !!botCommands,
     realUserGrowth: !!realUserGrowth,
     realCommands: !!realCommands,
     realPerformanceMetrics: !!realPerformanceMetrics,
@@ -135,11 +146,14 @@ const AnalyticsPage = () => {
 
   // Create category color mapping
   const categoryColors = {
-    'Games': '#ec4899',
-    'Economy': '#10b981',
-    'Utility': '#f59e0b',
-    'MiniGames': '#8b5cf6',
-    'Detective': '#ef4444'
+    'Games': PROFESSIONAL_COLORS.purple,
+    'Economy': PROFESSIONAL_COLORS.success,
+    'Utility': PROFESSIONAL_COLORS.warning,
+    'MiniGames': PROFESSIONAL_COLORS.pink,
+    'Detective': PROFESSIONAL_COLORS.danger,
+    'Moderation': PROFESSIONAL_COLORS.primary,
+    'Fun': PROFESSIONAL_COLORS.pink,
+    'Admin': PROFESSIONAL_COLORS.danger
   };
 
   const metricOptions = [
@@ -151,16 +165,27 @@ const AnalyticsPage = () => {
     { value: 'engagement', label: 'User Engagement', icon: Activity }
   ];
 
-  // Enhanced color scheme
+  // Professional Color Scheme
+  const PROFESSIONAL_COLORS = {
+    primary: '#3b82f6',
+    success: '#10b981', 
+    warning: '#f59e0b',
+    danger: '#ef4444',
+    purple: '#8b5cf6',
+    pink: '#ec4899',
+    teal: '#14b8a6',
+    orange: '#f97316'
+  };
+
   const COLORS = [
-    'hsl(var(--chart-1))',
-    'hsl(var(--chart-2))',
-    'hsl(var(--chart-3))',
-    'hsl(var(--chart-4))',
-    'hsl(var(--chart-5))',
-    'hsl(var(--primary))',
-    'hsl(var(--secondary))',
-    'hsl(340, 75%, 55%)'
+    PROFESSIONAL_COLORS.primary,
+    PROFESSIONAL_COLORS.success,
+    PROFESSIONAL_COLORS.warning,
+    PROFESSIONAL_COLORS.danger,
+    PROFESSIONAL_COLORS.purple,
+    PROFESSIONAL_COLORS.pink,
+    PROFESSIONAL_COLORS.teal,
+    PROFESSIONAL_COLORS.orange
   ];
 
 
@@ -460,25 +485,25 @@ const AnalyticsPage = () => {
 
   const colorSchemes = {
     blue: {
-      gradient: 'from-blue-300 via-blue-400 to-blue-500 dark:from-slate-900 dark:via-blue-950/30 dark:to-blue-900/30',
+      gradient: `from-${PROFESSIONAL_COLORS.primary} via-${PROFESSIONAL_COLORS.primary} to-${PROFESSIONAL_COLORS.primary} dark:from-slate-900 dark:via-blue-950/30 dark:to-blue-900/30`,
       border: 'border-blue-600',
       iconBg: 'bg-blue-500 dark:bg-blue-500/20 border border-blue-600 dark:border-blue-400/30',
       iconColor: 'text-white dark:text-blue-400'
     },
     green: {
-      gradient: 'from-green-300 via-green-400 to-green-500 dark:from-slate-900 dark:via-green-950/30 dark:to-green-900/30',
+      gradient: `from-${PROFESSIONAL_COLORS.success} via-${PROFESSIONAL_COLORS.success} to-${PROFESSIONAL_COLORS.success} dark:from-slate-900 dark:via-green-950/30 dark:to-green-900/30`,
       border: 'border-green-600',
       iconBg: 'bg-green-500 dark:bg-green-500/20 border border-green-600 dark:border-green-400/30',
       iconColor: 'text-white dark:text-green-400'
     },
     yellow: {
-      gradient: 'from-orange-300 via-orange-400 to-orange-500 dark:from-slate-900 dark:via-yellow-950/30 dark:to-yellow-900/30',
+      gradient: `from-${PROFESSIONAL_COLORS.warning} via-${PROFESSIONAL_COLORS.warning} to-${PROFESSIONAL_COLORS.warning} dark:from-slate-900 dark:via-yellow-950/30 dark:to-yellow-900/30`,
       border: 'border-orange-600',
       iconBg: 'bg-orange-500 dark:bg-yellow-500/20 border border-orange-600 dark:border-yellow-400/30',
       iconColor: 'text-white dark:text-yellow-400'
     },
     purple: {
-      gradient: 'from-purple-300 via-purple-400 to-purple-500 dark:from-slate-900 dark:via-purple-950/30 dark:to-purple-900/30',
+      gradient: `from-${PROFESSIONAL_COLORS.purple} via-${PROFESSIONAL_COLORS.purple} to-${PROFESSIONAL_COLORS.purple} dark:from-slate-900 dark:via-purple-950/30 dark:to-purple-900/30`,
       border: 'border-purple-600',
       iconBg: 'bg-purple-500 dark:bg-purple-500/20 border border-purple-600 dark:border-purple-400/30',
       iconColor: 'text-white dark:text-purple-400'
@@ -798,48 +823,60 @@ const AnalyticsPage = () => {
   return (
     <div className="space-y-8 animate-fade-in">
       {/* Professional Enhanced Header */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/5 via-primary/10 to-secondary/5 p-6 border-l-4 border-primary">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent opacity-50"></div>
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-slate-900 dark:via-blue-950/30 dark:to-purple-950/30 p-6 border-l-4 border-blue-500 shadow-lg">
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 to-purple-500/5 opacity-50"></div>
         <div className="relative space-y-6">
           {/* Title and Status Row */}
           <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
             <div className="space-y-2">
               <div className="flex items-center space-x-3">
-                <div className="p-2 bg-primary/10 rounded-xl">
-                  <BarChart3 className="h-6 w-6 text-primary" />
+                <div className="p-3 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl shadow-lg">
+                  <BarChart3 className="h-7 w-7 text-white" />
                 </div>
                 <div className="flex items-center gap-3">
-                  <h2 className="text-3xl font-bold piwpiw-text-gradient">
+                  <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                     Professional Analytics
                   </h2>
                   {isUsingRealData && (
-                    <Badge className="bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400 border-green-200 dark:border-green-800">
-                      ✅ Real Data
+                    <Badge className="bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400 border-green-200 dark:border-green-800 shadow-sm">
+                      <Bot className="h-3 w-3 mr-1" />
+                      Real Bot Data
                     </Badge>
                   )}
-                  {(userGrowthLoading || commandsLoading || performanceLoading) && (
+                  {(botStatusLoading || botServersLoading || botAnalyticsLoading || botCommandsLoading || userGrowthLoading || commandsLoading || performanceLoading) && (
                     <Badge className="bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400 border-blue-200 dark:border-blue-800 animate-pulse">
-                      🔄 Loading...
+                      <RefreshCw className="h-3 w-3 mr-1 animate-spin" />
+                      Loading...
                     </Badge>
                   )}
                 </div>
                 <div className="flex items-center space-x-2">
-                  {connectionStatus === 'connected' && (
+                  {botStatus?.bot?.online ? (
+                    <div className="flex items-center space-x-1 text-green-600">
+                      <Bot className="h-4 w-4" />
+                      <span className="text-xs font-medium">Bot Online</span>
+                    </div>
+                  ) : connectionStatus === 'connected' ? (
                     <div className="flex items-center space-x-1 text-green-600">
                       <Wifi className="h-4 w-4" />
                       <span className="text-xs font-medium">Live</span>
                     </div>
-                  )}
-                  {connectionStatus === 'reconnecting' && (
+                  ) : connectionStatus === 'reconnecting' ? (
                     <div className="flex items-center space-x-1 text-yellow-600">
                       <WifiOff className="h-4 w-4" />
                       <span className="text-xs font-medium">Reconnecting...</span>
+                    </div>
+                  ) : (
+                    <div className="flex items-center space-x-1 text-red-600">
+                      <WifiOff className="h-4 w-4" />
+                      <span className="text-xs font-medium">Offline</span>
                     </div>
                   )}
                 </div>
               </div>
               <p className="text-slate-700 dark:text-slate-400">
                 📊 Real-time insights across {totalCommands} commands • Last updated: {lastUpdated.toLocaleTimeString()}
+                {botStatus?.bot?.uptime && ` • Bot Uptime: ${botStatus.bot.uptime}`}
               </p>
               <div className="flex items-center space-x-4 text-sm">
                 <div className="flex items-center space-x-1">
@@ -853,9 +890,14 @@ const AnalyticsPage = () => {
                   <span className="text-slate-700 dark:text-slate-400">avg per command</span>
                 </div>
                 <div className="flex items-center space-x-1">
-                  <TrendingUpIcon className="h-4 w-4 text-blue-500" />
-                  <span className="font-medium text-slate-800 dark:text-slate-200">{predictiveMetrics.growthRate}%</span>
-                  <span className="text-slate-700 dark:text-slate-400">growth rate</span>
+                  <Server className="h-4 w-4 text-purple-500" />
+                  <span className="font-medium text-slate-800 dark:text-slate-200">{botStatus?.bot?.guilds || 0}</span>
+                  <span className="text-slate-700 dark:text-slate-400">servers</span>
+                </div>
+                <div className="flex items-center space-x-1">
+                  <Users className="h-4 w-4 text-blue-500" />
+                  <span className="font-medium text-slate-800 dark:text-slate-200">{botStatus?.bot?.users?.toLocaleString() || 0}</span>
+                  <span className="text-slate-700 dark:text-slate-400">users</span>
                 </div>
               </div>
             </div>
@@ -875,7 +917,7 @@ const AnalyticsPage = () => {
                 size="sm"
                 onClick={handleManualRefresh}
                 disabled={isLoading}
-                className="hover:scale-105 transition-all duration-300"
+                className="hover:scale-105 transition-all duration-300 bg-white dark:bg-slate-800 border-blue-200 dark:border-blue-700 hover:bg-blue-50 dark:hover:bg-blue-900/30"
               >
                 <RefreshCw className={`mr-2 h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
                 Refresh
@@ -1395,19 +1437,13 @@ const AnalyticsPage = () => {
           }
         ].map((metric, index) => {
           const isExpanded = expandedCharts.has(`metric-${index}`);
+          const colorScheme = colorSchemes[metric.color];
           return (
             <Card
               key={metric.title}
-              className={`relative overflow-hidden piwpiw-card-hover bg-gradient-to-br ${colorSchemes[metric.color].gradient} border-l-4 ${colorSchemes[metric.color].border} transition-all duration-500 hover:scale-105 animate-fade-in-up cursor-pointer group`}
+              className={`relative overflow-hidden piwpiw-card-hover bg-gradient-to-br from-white via-${metric.color}-50/30 to-${metric.color}-100/30 dark:from-slate-900 dark:via-${metric.color}-950/30 dark:to-${metric.color}-900/30 border-l-4 border-${metric.color}-500 transition-all duration-500 hover:scale-105 animate-fade-in-up cursor-pointer group shadow-lg hover:shadow-xl`}
               style={{ 
-                animationDelay: `${index * 100}ms`,
-                backgroundColor: metric.color === 'blue' ? '#60a5fa' : 
-                                metric.color === 'green' ? '#4ade80' :
-                                metric.color === 'yellow' ? '#fb923c' : '#a855f7',
-                backgroundImage: metric.color === 'blue' ? 'linear-gradient(135deg, #93c5fd, #60a5fa, #3b82f6)' :
-                                metric.color === 'green' ? 'linear-gradient(135deg, #86efac, #4ade80, #22c55e)' :
-                                metric.color === 'yellow' ? 'linear-gradient(135deg, #fed7aa, #fb923c, #f97316)' :
-                                'linear-gradient(135deg, #c4b5fd, #a855f7, #9333ea)'
+                animationDelay: `${index * 100}ms`
               }}
               onClick={() => toggleChartExpansion(`metric-${index}`)}
             >
